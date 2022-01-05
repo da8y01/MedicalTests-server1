@@ -1,7 +1,8 @@
 const dbConfig = require("../config/db.config.js")
 
 const Sequelize = require("sequelize")
-const sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
+
+const options = {
   host: dbConfig.HOST,
   dialect: dbConfig.dialect,
   operatorsAliases: false,
@@ -12,7 +13,13 @@ const sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
     acquire: dbConfig.pool.acquire,
     idle: dbConfig.pool.idle
   }
-})
+}
+
+let sequelize
+if (dbConfig.use_env_variable)
+  sequelize = new Sequelize(process.env[dbConfig.use_env_variable], options)
+else
+  sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, options)
 
 const db = {}
 
