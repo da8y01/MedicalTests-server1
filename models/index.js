@@ -5,6 +5,7 @@ const Sequelize = require("sequelize")
 const options = {
   host: dbConfig.HOST,
   dialect: dbConfig.dialect,
+  dialectOptions: dbConfig.dialectOptions,
   operatorsAliases: false,
 
   pool: {
