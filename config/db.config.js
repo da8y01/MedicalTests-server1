@@ -5,6 +5,9 @@ const configOptions = {
     PASSWORD: "postgres",
     DB: "postgres",
     dialect: "postgres",
+    dialectOptions: {
+      ssl: false
+    },
     pool: {
       max: 5,
       min: 0,
