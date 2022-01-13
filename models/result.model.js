@@ -1,9 +1,9 @@
 module.exports = (sequelize, Sequelize) => {
     const Result = sequelize.define("result", {
-      status: {
+      name: {
         type: Sequelize.STRING
       },
-      description: {
+      link: {
         type: Sequelize.STRING
       },
       patient: {
