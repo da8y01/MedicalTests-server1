@@ -5,6 +5,9 @@ const configOptions = {
     PASSWORD: "postgres",
     DB: "postgres",
     dialect: "postgres",
+    dialectOptions: {
+      ssl: false
+    },
     pool: {
       max: 5,
       min: 0,
@@ -16,7 +19,10 @@ const configOptions = {
     use_env_variable: "DATABASE_URL",
     dialect: "postgres",
     dialectOptions: {
-      ssl: true
+      ssl: {
+        require: true,
+        rejectUnauthorized: false
+      }
     },
     pool: {
       max: 5,
