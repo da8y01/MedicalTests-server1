@@ -5,17 +5,29 @@ const Op = db.Sequelize.Op;
 // Create and Save a new Result
 exports.create = (req, res) => {
   // Validate request
-  if (!req.body.status) {
+  if (!req.body.name) {
     res.status(400).send({
-      message: "Content can not be empty!",
+      message: "Name can not be empty!",
+    });
+    return;
+  }
+  if (!req.body.link) {
+    res.status(400).send({
+      message: "Link can not be empty!",
+    });
+    return;
+  }
+  if (!req.body.patient) {
+    res.status(400).send({
+      message: "Patient can not be empty!",
     });
     return;
   }
 
   // Create a Result
   const result = {
-    status: req.body.status,
-    description: req.body.description,
+    name: req.body.name,
+    link: req.body.link,
     patient: req.body.patient,
   };
 
@@ -34,8 +46,8 @@ exports.create = (req, res) => {
 
 // Retrieve all Results from the database.
 exports.findAll = (req, res) => {
-  const status = req.query.status;
-  var condition = status ? { status: { [Op.iLike]: `%${status}%` } } : null;
+  const name = req.query.name;
+  var condition = name ? { name: { [Op.iLike]: `%${name}%` } } : null;
 
   Result.findAll({ where: condition })
     .then((data) => {
