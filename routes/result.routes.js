@@ -8,6 +8,8 @@ module.exports = (app) => {
 
   // Retrieve all Results
   router.get("/", results.findAll);
+  
+  router.get("/seed", results.createSeed);
 
   // Retrieve all published Results
   router.get("/published", results.findAllPublished);

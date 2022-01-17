@@ -1,13 +1,20 @@
 module.exports = (sequelize, Sequelize) => {
     const Result = sequelize.define("result", {
       name: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        allowNull: false
       },
       link: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        allowNull: false
       },
       patient: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        allowNull: false
+      },
+      reading: {
+        type: Sequelize.INTEGER,
+        allowNull: true
       }
     })
   
