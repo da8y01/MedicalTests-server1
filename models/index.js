@@ -28,5 +28,6 @@ db.Sequelize = Sequelize
 db.sequelize = sequelize
 
 db.results = require("./result.model.js")(sequelize, Sequelize)
+db.patients = require("./patient.model.js")(sequelize, Sequelize)
 
 module.exports = db
