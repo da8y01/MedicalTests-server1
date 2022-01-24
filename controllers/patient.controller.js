@@ -50,16 +50,25 @@ exports.createSeed = (req, res) => {
       document: "1111",
       firstName: "Andres",
       lastName: "Agudelo",
+      address: "Calle 11 # 11 - 11 Poblado - Ed. El Doral apto 101",
+      phone: "3111111111",
+      email: "andres@agudelo.co",
     },
     {
       document: "2222",
       firstName: "Bernardo",
       lastName: "Botero",
+      address: "Calle 11 # 11 - 11 Poblado - Ed. El Doral apto 202",
+      phone: "3222222222",
+      email: "bernardo@botero.co",
     },
     {
       document: "3333",
       firstName: "Carlos",
       lastName: "Caicedo",
+      address: "Calle 33 # 33 - 33 Poblado - Ed. El Doral apto 303",
+      phone: "3333333333",
+      email: "carlos@caicedo.co",
     },
   ];
 
