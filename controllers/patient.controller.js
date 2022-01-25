@@ -58,7 +58,7 @@ exports.createSeed = (req, res) => {
       document: "2222",
       firstName: "Bernardo",
       lastName: "Botero",
-      address: "Calle 11 # 11 - 11 Poblado - Ed. El Doral apto 202",
+      address: "Calle 22 # 22 - 22 Poblado - Ed. El Doral apto 202",
       phone: "3222222222",
       email: "bernardo@botero.co",
     },
@@ -86,7 +86,7 @@ exports.createSeed = (req, res) => {
 // Retrieve all Patients from the database.
 exports.findAll = (req, res) => {
   const document = req.query.document;
-  var condition = document
+  var condition = document && document !== ''
     ? { document: { [Op.iLike]: `%${document}%` } }
     : null;
 
