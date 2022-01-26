@@ -86,11 +86,17 @@ exports.createSeed = (req, res) => {
 // Retrieve all Patients from the database.
 exports.findAll = (req, res) => {
   const document = req.query.document;
-  var condition = document && document !== ''
-    ? { document: { [Op.iLike]: `%${document}%` } }
-    : null;
+  var condition =
+    document && document !== ""
+      ? { document: { [Op.iLike]: `%${document}%` } }
+      : null;
+  let params = {
+    where: condition,
+    limit: req.query.limit || 5,
+    offset: req.query.offset || 0,
+  };
 
-  Patient.findAll({ where: condition })
+  Patient.findAndCountAll(params)
     .then((data) => {
       res.send(data);
     })
