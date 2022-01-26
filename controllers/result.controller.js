@@ -50,19 +50,19 @@ exports.createSeed = (req, res) => {
       name: "result 1",
       link: "https://medical-tests.herokuapp.com/DummyPDFDocument.pdf",
       patient: 1,
-      reading: 1
+      reading: 1,
     },
     {
       name: "result 2",
       link: "https://medical-tests.herokuapp.com/Landscape1.jpg",
       patient: 2,
-      reading: null
+      reading: null,
     },
     {
       name: "result 3",
       link: "https://medical-tests.herokuapp.com/Video1.mp4",
       patient: 3,
-      reading: 3
+      reading: 3,
     },
   ];
 
@@ -81,8 +81,13 @@ exports.createSeed = (req, res) => {
 exports.findAll = (req, res) => {
   const name = req.query.name;
   var condition = name ? { name: { [Op.iLike]: `%${name}%` } } : null;
+  let params = {
+    where: condition,
+    limit: req.query.limit || 10,
+    offset: req.query.offset || 0,
+  };
 
-  Result.findAll({ where: condition })
+  Result.findAndCountAll(params)
     .then((data) => {
       res.send(data);
     })

@@ -58,7 +58,7 @@ exports.createSeed = (req, res) => {
       document: "2222",
       firstName: "Bernardo",
       lastName: "Botero",
-      address: "Calle 11 # 11 - 11 Poblado - Ed. El Doral apto 202",
+      address: "Calle 22 # 22 - 22 Poblado - Ed. El Doral apto 202",
       phone: "3222222222",
       email: "bernardo@botero.co",
     },
@@ -69,6 +69,38 @@ exports.createSeed = (req, res) => {
       address: "Calle 33 # 33 - 33 Poblado - Ed. El Doral apto 303",
       phone: "3333333333",
       email: "carlos@caicedo.co",
+    },
+    {
+      document: "4444",
+      firstName: "Dario",
+      lastName: "Delgado",
+      address: "Calle 44 # 44 - 44 Poblado - Ed. El Doral apto 404",
+      phone: "3444444444",
+      email: "dario@delgado.co",
+    },
+    {
+      document: "5555",
+      firstName: "Ernesto",
+      lastName: "Echeverry",
+      address: "Calle 55 # 55 - 55 Poblado - Ed. El Doral apto 505",
+      phone: "3555555555",
+      email: "ernesto@echeverry.co",
+    },
+    {
+      document: "6666",
+      firstName: "Fanny",
+      lastName: "Fuentes",
+      address: "Calle 66 # 66 - 66 Poblado - Ed. El Doral apto 606",
+      phone: "3666666666",
+      email: "fanny@fuentes.co",
+    },
+    {
+      document: "7777",
+      firstName: "Gustavo",
+      lastName: "Gomez",
+      address: "Calle 77 # 77 - 77 Poblado - Ed. El Doral apto 707",
+      phone: "3777777777",
+      email: "gustavo@gomez.co",
     },
   ];
 
@@ -86,11 +118,17 @@ exports.createSeed = (req, res) => {
 // Retrieve all Patients from the database.
 exports.findAll = (req, res) => {
   const document = req.query.document;
-  var condition = document
-    ? { document: { [Op.iLike]: `%${document}%` } }
-    : null;
+  var condition =
+    document && document !== ""
+      ? { document: { [Op.iLike]: `%${document}%` } }
+      : null;
+  let params = {
+    where: condition,
+    limit: req.query.limit || 5,
+    offset: req.query.offset || 0,
+  };
 
-  Patient.findAll({ where: condition })
+  Patient.findAndCountAll(params)
     .then((data) => {
       res.send(data);
     })
