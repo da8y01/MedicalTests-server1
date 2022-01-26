@@ -70,6 +70,38 @@ exports.createSeed = (req, res) => {
       phone: "3333333333",
       email: "carlos@caicedo.co",
     },
+    {
+      document: "4444",
+      firstName: "Dario",
+      lastName: "Delgado",
+      address: "Calle 44 # 44 - 44 Poblado - Ed. El Doral apto 404",
+      phone: "3444444444",
+      email: "dario@delgado.co",
+    },
+    {
+      document: "5555",
+      firstName: "Ernesto",
+      lastName: "Echeverry",
+      address: "Calle 55 # 55 - 55 Poblado - Ed. El Doral apto 505",
+      phone: "3555555555",
+      email: "ernesto@echeverry.co",
+    },
+    {
+      document: "6666",
+      firstName: "Fanny",
+      lastName: "Fuentes",
+      address: "Calle 66 # 66 - 66 Poblado - Ed. El Doral apto 606",
+      phone: "3666666666",
+      email: "fanny@fuentes.co",
+    },
+    {
+      document: "7777",
+      firstName: "Gustavo",
+      lastName: "Gomez",
+      address: "Calle 77 # 77 - 77 Poblado - Ed. El Doral apto 707",
+      phone: "3777777777",
+      email: "gustavo@gomez.co",
+    },
   ];
 
   Patient.bulkCreate(seed)
