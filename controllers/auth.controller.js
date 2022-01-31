@@ -127,7 +127,7 @@ exports.createSeed = (req, res) => {
     })
     .catch((err) => {
       res.status(500).send({
-        message: err.message || "Some error occurred while creating the seed.",
+        message: err.message || "Some error occurred while creating the seed",
       });
     });
 };
