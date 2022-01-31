@@ -85,3 +85,49 @@ exports.signin = (req, res) => {
       res.status(500).send({ message: err.message });
     });
 };
+
+exports.createSeed = (req, res) => {
+  const seed = [
+    {
+      username: "patient1",
+      password: "password",
+      email: "patient1@mail.co",
+      roles: ['patient']
+    },
+    {
+      username: "medic1",
+      password: "password",
+      email: "medic1@mail.co",
+      roles: ['medic']
+    },
+    {
+      username: "admin1",
+      password: "password",
+      email: "admin1@mail.co",
+      roles: ['admin']
+    },
+  ];
+
+  User.bulkCreate(seed)
+    .then((data) => {
+      seed.map(e => {
+        
+        User.findOne({
+          where: {
+            username: e.username,
+          },
+        }).then(user => {
+          user.setRoles(e.roles).then(res => {
+            console.log(res)
+            res.send(data)
+          })
+        })
+      })
+      // res.send(data);
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message: err.message || "Some error occurred while creating the seed.",
+      });
+    });
+};

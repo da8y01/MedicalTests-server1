@@ -32,6 +32,7 @@ app.use(express.static(path.join(__dirname, "public")));
 
 const db = require("./models");
 const Role = db.role;
+const User = db.user;
 // db.sequelize.sync()
 db.sequelize.sync({ force: true }).then(() => {
   console.log("Drop and re-sync db.");
@@ -66,15 +67,32 @@ function initial() {
     id: 1,
     name: "patient",
   });
-
   Role.create({
     id: 2,
     name: "medic",
   });
-
   Role.create({
     id: 3,
     name: "admin",
+  });
+
+  User.create({
+    username: 'patient1',
+    password: "password",
+    email: "patient1@email.co",
+    roles: ['patient'],
+  });
+  User.create({
+    username: 'medic1',
+    password: "password",
+    email: "medic1@email.co",
+    roles: ['medic'],
+  });
+  User.create({
+    username: 'admin1',
+    password: "password",
+    email: "admin1@email.co",
+    roles: ['admin'],
   });
 }
 
