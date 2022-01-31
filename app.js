@@ -31,15 +31,20 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
 const db = require("./models");
+const Role = db.role;
+const User = db.user;
 // db.sequelize.sync()
 db.sequelize.sync({ force: true }).then(() => {
   console.log("Drop and re-sync db.");
+  initial();
 });
 
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
 require("./routes/result.routes")(app);
 require("./routes/patient.routes")(app);
+require('./routes/auth.routes')(app);
+require('./routes/user.routes')(app);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
@@ -56,5 +61,39 @@ app.use(function (err, req, res, next) {
   res.status(err.status || 500);
   res.render("error");
 });
+
+function initial() {
+  Role.create({
+    id: 1,
+    name: "patient",
+  });
+  Role.create({
+    id: 2,
+    name: "medic",
+  });
+  Role.create({
+    id: 3,
+    name: "admin",
+  });
+
+  User.create({
+    username: 'patient1',
+    password: "password",
+    email: "patient1@email.co",
+    roles: ['patient'],
+  });
+  User.create({
+    username: 'medic1',
+    password: "password",
+    email: "medic1@email.co",
+    roles: ['medic'],
+  });
+  User.create({
+    username: 'admin1',
+    password: "password",
+    email: "admin1@email.co",
+    roles: ['admin'],
+  });
+}
 
 module.exports = app;
