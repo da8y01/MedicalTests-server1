@@ -7,6 +7,7 @@ const Op = db.Sequelize.Op;
 
 var jwt = require("jsonwebtoken");
 var bcrypt = require("bcryptjs");
+const { user } = require("../models");
 
 exports.signup = (req, res) => {
   // Save User to Database
@@ -89,45 +90,51 @@ exports.signin = (req, res) => {
 exports.createSeed = (req, res) => {
   const seed = [
     {
-      username: "patient1",
-      password: "password",
+      username: "1001",
+      password: bcrypt.hashSync("password", 8),
       email: "patient1@mail.co",
-      roles: ['patient']
+      roles: ["patient"],
     },
     {
-      username: "medic1",
-      password: "password",
+      username: "2002",
+      password: bcrypt.hashSync("password", 8),
       email: "medic1@mail.co",
-      roles: ['medic']
+      roles: ["medic"],
     },
     {
-      username: "admin1",
-      password: "password",
+      username: "3003",
+      password: bcrypt.hashSync("password", 8),
       email: "admin1@mail.co",
-      roles: ['admin']
+      roles: ["admin"],
     },
   ];
 
   User.bulkCreate(seed)
     .then((data) => {
-      seed.map(e => {
-        
-        User.findOne({
+      const users = seed.map(async (user) => {
+        const userCurrent = await User.findOne({
           where: {
-            username: e.username,
+            username: user.username,
           },
-        }).then(user => {
-          user.setRoles(e.roles).then(res => {
-            console.log(res)
-            res.send(data)
-          })
+        });
+        const rolesFound = await Role.findAll({
+          where: {
+            name: {
+              [Op.or]: user.roles,
+            },
+          },
+        });
+        return userCurrent.setRoles(rolesFound);
+      });
+      Promise.all(users)
+        .then((result) => {
+          res.send(result);
         })
-      })
-      // res.send(data);
+        .catch((error) => console.error(error));
     })
     .catch((err) => {
       res.status(500).send({
-        message: err.message || "Some error occurred while creating the seed",
+        message: err.message || "Some error occurred while creating the seed.",
       });
     });
 };
