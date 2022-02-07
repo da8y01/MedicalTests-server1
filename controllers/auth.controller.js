@@ -138,3 +138,87 @@ exports.createSeed = (req, res) => {
       });
     });
 };
+
+exports.createSeedFull = (req, res) => {
+  const seed = [
+    {
+      username: "1001",
+      password: bcrypt.hashSync("password", 8),
+      email: "patient1@mail.co",
+      roles: ["patient"],
+    },
+    {
+      username: "2002",
+      password: bcrypt.hashSync("password", 8),
+      email: "medic1@mail.co",
+      roles: ["medic"],
+    },
+    {
+      username: "3003",
+      password: bcrypt.hashSync("password", 8),
+      email: "admin1@mail.co",
+      roles: ["admin"],
+    },
+  ];
+
+  Role.create({
+    id: 1,
+    name: "patient",
+  });
+  Role.create({
+    id: 2,
+    name: "medic",
+  });
+  Role.create({
+    id: 3,
+    name: "admin",
+  });
+
+  User.create({
+    username: "patient1",
+    password: "password",
+    email: "patient1@email.co",
+    roles: ["patient"],
+  });
+  User.create({
+    username: "medic1",
+    password: "password",
+    email: "medic1@email.co",
+    roles: ["medic"],
+  });
+  User.create({
+    username: "admin1",
+    password: "password",
+    email: "admin1@email.co",
+    roles: ["admin"],
+  });
+
+  User.bulkCreate(seed)
+    .then((data) => {
+      const users = seed.map(async (user) => {
+        const userCurrent = await User.findOne({
+          where: {
+            username: user.username,
+          },
+        });
+        const rolesFound = await Role.findAll({
+          where: {
+            name: {
+              [Op.or]: user.roles,
+            },
+          },
+        });
+        return userCurrent.setRoles(rolesFound);
+      });
+      Promise.all(users)
+        .then((result) => {
+          res.send(result);
+        })
+        .catch((error) => console.error(error));
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message: err.message || "Some error occurred while creating the seed.",
+      });
+    });
+};
