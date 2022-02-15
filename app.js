@@ -36,7 +36,7 @@ const User = db.user;
 // db.sequelize.sync()
 db.sequelize.sync({ force: true }).then(() => {
   console.log("Drop and re-sync db.");
-  initial();
+  // initial();
 });
 
 app.use("/", indexRouter);
