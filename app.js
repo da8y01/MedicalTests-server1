@@ -42,7 +42,7 @@ db.sequelize.sync({ force: true }).then(() => {
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
 require("./routes/result.routes")(app);
-require("./routes/patient.routes")(app);
+// require("./routes/patient.routes")(app);
 require('./routes/auth.routes')(app);
 require('./routes/user.routes')(app);
 

@@ -1,5 +1,6 @@
 const { authJwt } = require("../middleware");
 const controller = require("../controllers/user.controller");
+const patientController = require("../controllers/patient.controller");
 
 module.exports = function (app) {
   app.use(function (req, res, next) {
@@ -13,6 +14,8 @@ module.exports = function (app) {
   app.get("/api/test/all", controller.allAccess);
 
   app.get("/api/test/patient", [authJwt.verifyToken], controller.patientBoard);
+  
+  app.get("/api/patients", [authJwt.verifyToken], patientController.findAll);
 
   app.get(
     "/api/test/medic",

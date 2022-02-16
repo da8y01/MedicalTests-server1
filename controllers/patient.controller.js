@@ -1,5 +1,6 @@
 const db = require("../models");
-const Patient = db.patients;
+// const Patient = db.patients;
+const User = db.user;
 const Op = db.Sequelize.Op;
 
 // Create and Save a new Patient
@@ -118,17 +119,23 @@ exports.createSeed = (req, res) => {
 // Retrieve all Patients from the database.
 exports.findAll = (req, res) => {
   const document = req.query.document;
+  const queryMedic = req.query.medic;
   var condition =
     document && document !== ""
       ? { document: { [Op.iLike]: `%${document}%` } }
       : null;
+  var conditionMedic =
+  queryMedic && queryMedic !== ""
+      ? { medic: queryMedic }
+      : null;
+  const conditionMixed = {...condition, ...conditionMedic}
   let params = {
-    where: condition,
+    where: conditionMixed,
     limit: req.query.limit || 5,
     offset: req.query.offset || 0,
   };
 
-  Patient.findAndCountAll(params)
+  User.findAndCountAll(params)
     .then((data) => {
       res.send(data);
     })

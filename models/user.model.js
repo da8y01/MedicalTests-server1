@@ -30,10 +30,10 @@ module.exports = (sequelize, Sequelize) => {
       type: Sequelize.STRING,
       allowNull: true,
     },
-    // medic: {
-    //   type: Sequelize.INTEGER,
-    //   allowNull: false
-    // },
+    medic: {
+      type: Sequelize.INTEGER,
+      allowNull: true
+    },
   })
 
   return User

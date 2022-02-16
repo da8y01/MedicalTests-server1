@@ -1,8 +1,10 @@
 const configOptions = {
   development: {
-    HOST: "localhost",
+    // HOST: "localhost",
+    HOST: "172.17.0.2",
     USER: "postgres",
-    PASSWORD: "postgres",
+    // PASSWORD: "postgres",
+    PASSWORD: "password",
     DB: "postgres",
     dialect: "postgres",
     dialectOptions: {
