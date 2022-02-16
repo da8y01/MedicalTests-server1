@@ -153,17 +153,18 @@ exports.createSeedFull = async (req, res) => {
     },
   ]
   await Role.bulkCreate(seedRoles)
+  // Role.bulkCreate(seedRoles)
 
   const password = bcrypt.hashSync('password', 8)
   const seedUsers = [
-    {
-      username: '1001',
-      password,
-      email: 'patient1@mail.co',
-      firstName: 'Patient',
-      lastName: 'Uno',
-      roles: ['patient'],
-    },
+    // {
+    //   username: '1001',
+    //   password,
+    //   email: 'patient1@mail.co',
+    //   firstName: 'Patient',
+    //   lastName: 'Uno',
+    //   roles: ['patient'],
+    // },
     {
       username: '2001',
       password,
@@ -270,17 +271,53 @@ exports.createSeedFull = async (req, res) => {
     const rolesFound = await Role.findAll({ where: { name: seedUser.roles } })
     await newUser.setRoles(rolesFound)
 
-    if (seedUser.roles.includes('patient')) {
-      seedResults.map((seedResult) => {
-        seedResult.patient = newUser.id
+    if (seedUser.roles.includes('medic')) {
+      User.create({
+        username: '1001',
+        password,
+        email: 'patient1@mail.co',
+        firstName: 'Patient',
+        lastName: 'Uno',
+        medic: newUser.id,
       })
-      await Result.bulkCreate(seedResults)
+        .then(async (newPatient) => {
+          // console.info(newPatient)
+          const rolePatient = await Role.findOne({ where: { name: 'patient' } })
+          await newPatient.setRoles(rolePatient)
+          const completedResults = seedResults.map((seedResult) => {
+            seedResult.patient = newPatient.id
+            return seedResult
+          })
+          return Result.bulkCreate(completedResults)
+        })
+        .catch((error) => console.error(error))
     }
+
+    // if (seedUser.roles.includes('patient')) {
+    //   seedResults.map((seedResult) => {
+    //     seedResult.patient = newUser.id
+    //   })
+    //   await Result.bulkCreate(seedResults)
+    // }
     return newUser
   })
 
   Promise.all(newUsers)
-    .then((newUsersResult) => res.send(newUsersResult))
+    .then(async (newUsersResult) => {
+      // res.send(newUsersResult)
+      const users = await User.findAll({
+        where: {
+          medic: {
+            [Op.eq]: null,
+            // [Op.ne]: null,
+          },
+        },
+        include: Role
+      })
+      console.info(users[0].roles)
+      // res.send(users)
+      return res.send(users)
+    })
     .catch((error) => {
       res.status(500).send({
         message:
