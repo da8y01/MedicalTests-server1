@@ -1,11 +1,9 @@
 const configOptions = {
   development: {
-    // HOST: "localhost",
-    HOST: "172.17.0.2",
-    USER: "postgres",
-    // PASSWORD: "postgres",
-    PASSWORD: "password",
-    DB: "postgres",
+    HOST: process.env.DB_HOST,
+    USER: process.env.DB_USER,
+    PASSWORD: process.env.DB_PASSWORD,
+    DB: process.env.DB_DATABASE,
     dialect: "postgres",
     dialectOptions: {
       ssl: false
