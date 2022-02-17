@@ -50,15 +50,17 @@ exports.signin = (req, res) => {
   })
     .then((user) => {
       if (!user) {
-        return res.status(404).send({ message: 'User Not found.' })
+        return res
+          .status(404)
+          .send({ code: 404, data: 'ERROR: Usuario no encontrado.' })
       }
 
       var passwordIsValid = bcrypt.compareSync(req.body.password, user.password)
 
       if (!passwordIsValid) {
         return res.status(401).send({
-          accessToken: null,
-          message: 'Invalid Password!',
+          code: 401,
+          data: 'ERROR: Password inválido.',
         })
       }
 
@@ -72,16 +74,19 @@ exports.signin = (req, res) => {
           authorities.push('ROLE_' + roles[i].name.toUpperCase())
         }
         res.status(200).send({
-          id: user.id,
-          username: user.username,
-          email: user.email,
-          roles: authorities,
-          accessToken: token,
+          code: 200,
+          data: {
+            id: user.id,
+            username: user.username,
+            email: user.email,
+            roles: authorities,
+            accessToken: token,
+          },
         })
       })
     })
     .catch((err) => {
-      res.status(500).send({ message: err.message })
+      res.status(500).send({ code: 500, data: err.message })
     })
 }
 
@@ -312,7 +317,7 @@ exports.createSeedFull = async (req, res) => {
             // [Op.ne]: null,
           },
         },
-        include: Role
+        include: Role,
       })
       console.info(users[0].roles)
       // res.send(users)
