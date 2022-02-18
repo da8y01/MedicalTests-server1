@@ -313,7 +313,8 @@ exports.createSeedFull = async (req, res) => {
       })
       User.bulkCreate(completedPatients)
         .then((newPatients) => {
-          newPatients.map((newPatient) => {
+          newPatients.map(async (newPatient) => {
+            await newPatient.setRoles(newRoles.patient)
             const completedResults = seedResults[newPatient.username].map(
               (seedResult) => {
                 seedResult.patient = newPatient.id
