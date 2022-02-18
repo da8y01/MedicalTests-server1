@@ -8,14 +8,14 @@ verifyToken = (req, res, next) => {
 
   if (!token) {
     return res.status(403).send({
-      message: "No token provided!",
+      message: "No token provided.",
     });
   }
 
   jwt.verify(token, config.secret, (err, decoded) => {
     if (err) {
       return res.status(401).send({
-        message: "Unauthorized!",
+        message: "Unauthorized.",
       });
     }
     req.userId = decoded.id;
@@ -34,7 +34,7 @@ isAdmin = (req, res, next) => {
       }
 
       res.status(403).send({
-        message: "Require Admin Role!",
+        message: "Require Admin role.",
       });
       return;
     });
@@ -52,7 +52,7 @@ isMedic = (req, res, next) => {
       }
 
       res.status(403).send({
-        message: "Require Medic Role!",
+        message: "Require Medic role.",
       });
     });
   });

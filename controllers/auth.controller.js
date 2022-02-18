@@ -157,19 +157,20 @@ exports.createSeedFull = async (req, res) => {
       name: 'admin',
     },
   ]
-  await Role.bulkCreate(seedRoles)
-  // Role.bulkCreate(seedRoles)
+  let newRoles = {
+    patient: null,
+    medic: null,
+    admin: null,
+  }
+  Role.bulkCreate(seedRoles).then((createdRoles) => {
+    createdRoles.map((createdRole) => {
+      newRoles[createdRole.name] = createdRole
+    })
+    return createdRoles
+  })
 
   const password = bcrypt.hashSync('password', 8)
   const seedUsers = [
-    // {
-    //   username: '1001',
-    //   password,
-    //   email: 'patient1@mail.co',
-    //   firstName: 'Patient',
-    //   lastName: 'Uno',
-    //   roles: ['patient'],
-    // },
     {
       username: '2001',
       password,
@@ -196,137 +197,141 @@ exports.createSeedFull = async (req, res) => {
     },
   ]
 
-  const seedResults = [
+  const seedResults = {
+    1001: [
+      {
+        name: 'result 3',
+        link: 'https://medical-tests.herokuapp.com/31-01-2022-MA-PATRICIA_CORTES-JC-MMT_1.pdf',
+        patient: null,
+        reading: null,
+      },
+      {
+        name: 'result 4',
+        link: 'https://medical-tests.herokuapp.com/CORTES_CORREDOR_PATRICIA-MACULA_AF_OD.JPG',
+        patient: null,
+        reading: null,
+      },
+      {
+        name: 'result 5',
+        link: 'https://medical-tests.herokuapp.com/CORTES_CORREDOR_PATRICIA-MACULA_AF_OI.JPG',
+        patient: null,
+        reading: null,
+      },
+      {
+        name: 'result 6',
+        link: 'https://medical-tests.herokuapp.com/CORTES_CORREDOR_PATRICIA-MACULA_COLOR_OD.JPG',
+        patient: null,
+        reading: null,
+      },
+      {
+        name: 'result 7',
+        link: 'https://medical-tests.herokuapp.com/CORTES_CORREDOR_PATRICIA-MACULA_COLOR_OI.JPG',
+        patient: null,
+        reading: null,
+      },
+      {
+        name: 'result 8',
+        link: 'https://medical-tests.herokuapp.com/CORTES_CORREDOR_PATRICIA-MACULA_ESPESORES_AO.JPG',
+        patient: null,
+        reading: null,
+      },
+    ],
+    1002: [
+      {
+        name: 'result 1',
+        link: 'https://medical-tests.herokuapp.com/28-01-2022-MA-RODRIGO_SANIN-MZ-MMT.pdf',
+        patient: null,
+        reading: null,
+      },
+      {
+        name: 'result 2',
+        link: 'https://medical-tests.herokuapp.com/28-01-2022-NO-RODRIGO_SANIN-_MZ-MMT.pdf',
+        patient: null,
+        reading: null,
+      },
+      {
+        name: 'result 9',
+        link: 'https://medical-tests.herokuapp.com/SANIN_GARCIA_RODRIGO-MACULA_AF_OD.JPG',
+        patient: null,
+        reading: null,
+      },
+      {
+        name: 'result 10',
+        link: 'https://medical-tests.herokuapp.com/SANIN_GARCIA_RODRIGO-MACULA_AF_OI.JPG',
+        patient: null,
+        reading: null,
+      },
+      {
+        name: 'result 11',
+        link: 'https://medical-tests.herokuapp.com/SANIN_GARCIA_RODRIGO-MACULA_COLOR_OD.JPG',
+        patient: null,
+        reading: null,
+      },
+    ],
+    1003: [
+      {
+        name: 'result 12',
+        link: 'https://medical-tests.herokuapp.com/CORTES_CORREDOR_PATRICIA-MACULA_VIDEO_0_OD.avi',
+        patient: null,
+        reading: null,
+      },
+    ],
+  }
+
+  const seedPatients = [
     {
-      name: 'result 1',
-      link: 'https://medical-tests.herokuapp.com/28-01-2022-MA-RODRIGO_SANIN-MZ-MMT.pdf',
-      patient: null,
-      reading: null,
+      username: '1001',
+      password,
+      email: 'patient1@mail.co',
+      firstName: 'Patricia',
+      lastName: 'Cortes Corredor',
     },
     {
-      name: 'result 2',
-      link: 'https://medical-tests.herokuapp.com/28-01-2022-NO-RODRIGO_SANIN-_MZ-MMT.pdf',
-      patient: null,
-      reading: null,
+      username: '1002',
+      password,
+      email: 'patient2@mail.co',
+      firstName: 'Rodrigo',
+      lastName: 'Sanin Garcia',
     },
     {
-      name: 'result 3',
-      link: 'https://medical-tests.herokuapp.com/31-01-2022-MA-PATRICIA_CORTES-JC-MMT_1.pdf',
-      patient: null,
-      reading: null,
-    },
-    {
-      name: 'result 4',
-      link: 'https://medical-tests.herokuapp.com/CORTES_CORREDOR_PATRICIA-MACULA_AF_OD.JPG',
-      patient: null,
-      reading: null,
-    },
-    {
-      name: 'result 5',
-      link: 'https://medical-tests.herokuapp.com/CORTES_CORREDOR_PATRICIA-MACULA_AF_OI.JPG',
-      patient: null,
-      reading: null,
-    },
-    {
-      name: 'result 6',
-      link: 'https://medical-tests.herokuapp.com/CORTES_CORREDOR_PATRICIA-MACULA_COLOR_OD.JPG',
-      patient: null,
-      reading: null,
-    },
-    {
-      name: 'result 7',
-      link: 'https://medical-tests.herokuapp.com/CORTES_CORREDOR_PATRICIA-MACULA_COLOR_OI.JPG',
-      patient: null,
-      reading: null,
-    },
-    {
-      name: 'result 8',
-      link: 'https://medical-tests.herokuapp.com/CORTES_CORREDOR_PATRICIA-MACULA_ESPESORES_AO.JPG',
-      patient: null,
-      reading: null,
-    },
-    {
-      name: 'result 9',
-      link: 'https://medical-tests.herokuapp.com/SANIN_GARCIA_RODRIGO-MACULA_AF_OD.JPG',
-      patient: null,
-      reading: null,
-    },
-    {
-      name: 'result 10',
-      link: 'https://medical-tests.herokuapp.com/SANIN_GARCIA_RODRIGO-MACULA_AF_OI.JPG',
-      patient: null,
-      reading: null,
-    },
-    {
-      name: 'result 11',
-      link: 'https://medical-tests.herokuapp.com/SANIN_GARCIA_RODRIGO-MACULA_COLOR_OD.JPG',
-      patient: null,
-      reading: null,
-    },
-    {
-      name: 'result 12',
-      link: 'https://medical-tests.herokuapp.com/CORTES_CORREDOR_PATRICIA-MACULA_VIDEO_0_OD.avi',
-      patient: null,
-      reading: null,
+      username: '1003',
+      password,
+      email: 'patient3@mail.co',
+      firstName: 'Patient',
+      lastName: 'Tres',
     },
   ]
 
-  const newUsers = await seedUsers.map(async (seedUser) => {
+  const createdUsers = seedUsers.map(async (seedUser) => {
     const newUser = await User.create(seedUser)
-    const rolesFound = await Role.findAll({ where: { name: seedUser.roles } })
-    await newUser.setRoles(rolesFound)
+    await newUser.setRoles(newRoles[seedUser.roles[0]])
 
     if (seedUser.roles.includes('medic')) {
-      User.create({
-        username: '1001',
-        password,
-        email: 'patient1@mail.co',
-        firstName: 'Patient',
-        lastName: 'Uno',
-        medic: newUser.id,
+      const completedPatients = seedPatients.map((seedPatient) => {
+        seedPatient.medic = newUser.id
+        return seedPatient
       })
-        .then(async (newPatient) => {
-          // console.info(newPatient)
-          const rolePatient = await Role.findOne({ where: { name: 'patient' } })
-          await newPatient.setRoles(rolePatient)
-          const completedResults = seedResults.map((seedResult) => {
-            seedResult.patient = newPatient.id
-            return seedResult
+      User.bulkCreate(completedPatients)
+        .then((newPatients) => {
+          newPatients.map((newPatient) => {
+            const completedResults = seedResults[newPatient.username].map(
+              (seedResult) => {
+                seedResult.patient = newPatient.id
+                return seedResult
+              }
+            )
+            Result.bulkCreate(completedResults)
+              .then((createdResults) => createdResults)
+              .catch((error) => console.error(error.message))
           })
-          return Result.bulkCreate(completedResults)
         })
-        .catch((error) => console.error(error))
+        .catch((error) => console.error(error.message))
     }
-
-    // if (seedUser.roles.includes('patient')) {
-    //   seedResults.map((seedResult) => {
-    //     seedResult.patient = newUser.id
-    //   })
-    //   await Result.bulkCreate(seedResults)
-    // }
     return newUser
   })
-
-  Promise.all(newUsers)
-    .then(async (newUsersResult) => {
-      // res.send(newUsersResult)
-      const users = await User.findAll({
-        where: {
-          medic: {
-            [Op.eq]: null,
-            // [Op.ne]: null,
-          },
-        },
-        include: Role,
-      })
-      console.info(users[0].roles)
-      // res.send(users)
-      return res.send(users)
+  return Promise.all(createdUsers)
+    .then((createdUsers) => {
+      return res.status(200).send(createdUsers)
     })
-    .catch((error) => {
-      res.status(500).send({
-        message:
-          error.message || 'Some error occurred while creating the seed full.',
-      })
-    })
+    .catch((error) => (res.status(500).send(error)))
 }

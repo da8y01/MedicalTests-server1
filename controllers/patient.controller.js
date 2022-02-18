@@ -118,17 +118,17 @@ exports.createSeed = (req, res) => {
 
 // Retrieve all Patients from the database.
 exports.findAll = (req, res) => {
-  const document = req.query.document;
+  const queryUsername = req.query.document;
   const queryMedic = req.query.medic;
-  var condition =
-    document && document !== ""
-      ? { document: { [Op.iLike]: `%${document}%` } }
+  var conditionUsername =
+  queryUsername && queryUsername !== ""
+      ? { username: { [Op.iLike]: `%${queryUsername}%` } }
       : null;
   var conditionMedic =
   queryMedic && queryMedic !== ""
       ? { medic: queryMedic }
       : null;
-  const conditionMixed = {...condition, ...conditionMedic}
+  const conditionMixed = {...conditionUsername, ...conditionMedic}
   let params = {
     where: conditionMixed,
     limit: req.query.limit || 5,
@@ -137,7 +137,7 @@ exports.findAll = (req, res) => {
 
   User.findAndCountAll(params)
     .then((data) => {
-      res.send(data);
+      res.status(200).send(data); // apply good documentation and self-xyz , and use some significative constant
     })
     .catch((err) => {
       res.status(500).send({
@@ -154,7 +154,7 @@ exports.findOne = (req, res) => {
   Patient.findByPk(id)
     .then((data) => {
       if (data) {
-        res.send(data);
+        res.status(200).send(data);
       } else {
         res.status(404).send({
           message: `Cannot find Patient with id=${id}.`,
@@ -177,12 +177,12 @@ exports.update = (req, res) => {
   })
     .then((num) => {
       if (num == 1) {
-        res.send({
+        res.status(200).send({
           message: "Patient was updated successfully.",
         });
       } else {
         res.send({
-          message: `Cannot update Patient with id=${id}. Maybe Patient was not found or req.body is empty!`,
+          message: `Cannot update Patient with id=${id}. Maybe Patient was not found or req.body is empty.`,
         });
       }
     })
@@ -202,12 +202,12 @@ exports.delete = (req, res) => {
   })
     .then((num) => {
       if (num == 1) {
-        res.send({
-          message: "Patient was deleted successfully!",
+        res.status(200).send({
+          message: "Patient was deleted successfully.",
         });
       } else {
         res.send({
-          message: `Cannot delete Patient with id=${id}. Maybe Patient was not found!`,
+          message: `Cannot delete Patient with id=${id}. Maybe Patient was not found.`,
         });
       }
     })
@@ -225,7 +225,7 @@ exports.deleteAll = (req, res) => {
     truncate: false,
   })
     .then((nums) => {
-      res.send({ message: `${nums} Patients were deleted successfully!` });
+      res.status(200).send({ message: `${nums} Patients were deleted successfully.` });
     })
     .catch((err) => {
       res.status(500).send({
