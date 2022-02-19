@@ -200,37 +200,37 @@ exports.createSeedFull = async (req, res) => {
   const seedResults = {
     1001: [
       {
-        name: 'result 3',
+        name: '31-01-2022-MA-PATRICIA_CORTES-JC-MMT_1',
         link: 'https://medical-tests.herokuapp.com/31-01-2022-MA-PATRICIA_CORTES-JC-MMT_1.pdf',
         patient: null,
         reading: null,
       },
       {
-        name: 'result 4',
+        name: 'CORTES_CORREDOR_PATRICIA-MACULA_AF_OD',
         link: 'https://medical-tests.herokuapp.com/CORTES_CORREDOR_PATRICIA-MACULA_AF_OD.JPG',
         patient: null,
         reading: null,
       },
       {
-        name: 'result 5',
+        name: 'CORTES_CORREDOR_PATRICIA-MACULA_AF_OI',
         link: 'https://medical-tests.herokuapp.com/CORTES_CORREDOR_PATRICIA-MACULA_AF_OI.JPG',
         patient: null,
         reading: null,
       },
       {
-        name: 'result 6',
+        name: 'CORTES_CORREDOR_PATRICIA-MACULA_COLOR_OD',
         link: 'https://medical-tests.herokuapp.com/CORTES_CORREDOR_PATRICIA-MACULA_COLOR_OD.JPG',
         patient: null,
         reading: null,
       },
       {
-        name: 'result 7',
+        name: 'CORTES_CORREDOR_PATRICIA-MACULA_COLOR_OI',
         link: 'https://medical-tests.herokuapp.com/CORTES_CORREDOR_PATRICIA-MACULA_COLOR_OI.JPG',
         patient: null,
         reading: null,
       },
       {
-        name: 'result 8',
+        name: 'CORTES_CORREDOR_PATRICIA-MACULA_ESPESORES_AO',
         link: 'https://medical-tests.herokuapp.com/CORTES_CORREDOR_PATRICIA-MACULA_ESPESORES_AO.JPG',
         patient: null,
         reading: null,
@@ -238,31 +238,31 @@ exports.createSeedFull = async (req, res) => {
     ],
     1002: [
       {
-        name: 'result 1',
+        name: '28-01-2022-MA-RODRIGO_SANIN-MZ-MMT',
         link: 'https://medical-tests.herokuapp.com/28-01-2022-MA-RODRIGO_SANIN-MZ-MMT.pdf',
         patient: null,
         reading: null,
       },
       {
-        name: 'result 2',
+        name: '28-01-2022-NO-RODRIGO_SANIN-_MZ-MMT',
         link: 'https://medical-tests.herokuapp.com/28-01-2022-NO-RODRIGO_SANIN-_MZ-MMT.pdf',
         patient: null,
         reading: null,
       },
       {
-        name: 'result 9',
+        name: 'SANIN_GARCIA_RODRIGO-MACULA_AF_OD',
         link: 'https://medical-tests.herokuapp.com/SANIN_GARCIA_RODRIGO-MACULA_AF_OD.JPG',
         patient: null,
         reading: null,
       },
       {
-        name: 'result 10',
+        name: 'SANIN_GARCIA_RODRIGO-MACULA_AF_OI',
         link: 'https://medical-tests.herokuapp.com/SANIN_GARCIA_RODRIGO-MACULA_AF_OI.JPG',
         patient: null,
         reading: null,
       },
       {
-        name: 'result 11',
+        name: 'result SANIN_GARCIA_RODRIGO-MACULA_COLOR_OD',
         link: 'https://medical-tests.herokuapp.com/SANIN_GARCIA_RODRIGO-MACULA_COLOR_OD.JPG',
         patient: null,
         reading: null,
@@ -270,7 +270,7 @@ exports.createSeedFull = async (req, res) => {
     ],
     1003: [
       {
-        name: 'result 12',
+        name: 'CORTES_CORREDOR_PATRICIA-MACULA_VIDEO_0_OD',
         link: 'https://medical-tests.herokuapp.com/CORTES_CORREDOR_PATRICIA-MACULA_VIDEO_0_OD.avi',
         patient: null,
         reading: null,

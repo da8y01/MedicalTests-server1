@@ -80,7 +80,8 @@ exports.createSeed = (req, res) => {
 // Retrieve all Results from the database.
 exports.findAll = (req, res) => {
   const name = req.query.name;
-  var condition = name ? { name: { [Op.iLike]: `%${name}%` } } : null;
+  const queryPatient = req.query.patient;
+  var condition = queryPatient ? { patient: queryPatient } : null;
   let params = {
     where: condition,
     limit: req.query.limit || 10,
@@ -89,7 +90,7 @@ exports.findAll = (req, res) => {
 
   Result.findAndCountAll(params)
     .then((data) => {
-      res.send(data);
+      res.status(200).send(data);
     })
     .catch((err) => {
       res.status(500).send({
