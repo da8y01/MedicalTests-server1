@@ -27,18 +27,18 @@ exports.signup = (req, res) => {
           },
         }).then((roles) => {
           user.setRoles(roles).then(() => {
-            res.send({ message: 'User was registered successfully!' })
+            res.send({ message: 'OK: User was registered successfully.' })
           })
         })
       } else {
         // user role = 1
         user.setRoles([1]).then(() => {
-          res.send({ message: 'User was registered successfully!' })
+          res.send({ message: 'OK: User was registered successfully.' })
         })
       }
     })
-    .catch((err) => {
-      res.status(500).send({ message: err.message })
+    .catch((error) => {
+      res.status(500).send(error)
     })
 }
 
@@ -52,15 +52,14 @@ exports.signin = (req, res) => {
       if (!user) {
         return res
           .status(404)
-          .send({ code: 404, data: 'ERROR: Usuario no encontrado.' })
+          .send({ message: 'ERROR: Usuario no encontrado.' })
       }
 
       var passwordIsValid = bcrypt.compareSync(req.body.password, user.password)
 
       if (!passwordIsValid) {
         return res.status(401).send({
-          code: 401,
-          data: 'ERROR: Password inválido.',
+          message: 'ERROR: Password inválido.',
         })
       }
 
@@ -74,7 +73,6 @@ exports.signin = (req, res) => {
           authorities.push('ROLE_' + roles[i].name.toUpperCase())
         }
         res.status(200).send({
-          code: 200,
           data: {
             id: user.id,
             username: user.username,
@@ -85,8 +83,8 @@ exports.signin = (req, res) => {
         })
       })
     })
-    .catch((err) => {
-      res.status(500).send({ code: 500, data: err.message })
+    .catch((error) => {
+      res.status(500).send(error)
     })
 }
 
@@ -334,5 +332,5 @@ exports.createSeedFull = async (req, res) => {
     .then((createdUsers) => {
       return res.status(200).send(createdUsers)
     })
-    .catch((error) => (res.status(500).send(error)))
+    .catch((error) => res.status(500).send(error))
 }
