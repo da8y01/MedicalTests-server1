@@ -1,3 +1,4 @@
+const nodemailer = require('nodemailer')
 const db = require('../models')
 const config = require('../config/auth.config')
 const User = db.user
@@ -73,13 +74,11 @@ exports.signin = (req, res) => {
           authorities.push('ROLE_' + roles[i].name.toUpperCase())
         }
         res.status(200).send({
-          data: {
-            id: user.id,
-            username: user.username,
-            email: user.email,
-            roles: authorities,
-            accessToken: token,
-          },
+          id: user.id,
+          username: user.username,
+          email: user.email,
+          roles: authorities,
+          accessToken: token,
         })
       })
     })
@@ -333,4 +332,67 @@ exports.createSeedFull = async (req, res) => {
       return res.status(200).send(createdUsers)
     })
     .catch((error) => res.status(500).send(error))
+}
+
+exports.forgotPassword = async (req, res) => {
+  try {
+    // Generate test SMTP service account from ethereal.email
+    // Only needed if you don't have a real mail account for testing
+    let testAccount = await nodemailer.createTestAccount()
+
+    const transportOptions = {
+      host: 'smtp.ethereal.email',
+      // host: 'smtp.gmail.com',
+      // host: 'outlook.office365.com', // IMAP
+      // host: 'smtp-mail.outlook.com', // SMTP
+      // port: 465,
+      port: 587, // SMTP
+      // port: 993, // IMAP
+      secure: false, // true for 465, false for other ports
+      auth: {
+        user: testAccount.user, // generated ethereal user
+        pass: testAccount.pass, // generated ethereal password
+      },
+      tls: {
+        // do not fail on invalid certs
+        rejectUnauthorized: false,
+      },
+    }
+
+    // create reusable transporter object using the default SMTP transport
+    let transporter = nodemailer.createTransport(transportOptions)
+    // verify connection configuration
+    await transporter.verify(function (error, success) {
+      if (error) {
+        console.log(error)
+      } else {
+        console.log('OK: Server is ready to take messages.')
+      }
+    })
+
+    const user = await User.findOne({
+      where: { username: req.params.username },
+    })
+    const messageOptions = {
+      from: '"mailer@server.com" <mailer@server.com>', // sender address
+      to: user.email,
+      subject: 'Recordatorio de clave.', // Subject line
+      text: 'La clave de ingreso es: password', // plain text body
+      html: '<b>La clave de ingreso es: password</b>', // html body
+    }
+    // send mail with defined transport object
+    let info = await transporter.sendMail(messageOptions)
+
+    console.log('Message sent: %s', info.messageId)
+    // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
+
+    // Preview only available when sending through an Ethereal account
+    const messageUrl = nodemailer.getTestMessageUrl(info)
+    console.log('Preview URL: %s', messageUrl)
+    // Preview URL: https://ethereal.email/message/WaQKMgKddxQDoou...
+    res.status(200).send({ message: messageUrl })
+  } catch (error) {
+    console.error(error)
+    res.status(500).send(error)
+  }
 }
