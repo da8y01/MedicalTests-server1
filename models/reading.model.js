@@ -1,5 +1,5 @@
 module.exports = (sequelize, Sequelize) => {
-  const Result = sequelize.define('result', {
+  const Reading = sequelize.define('reading', {
     name: {
       type: Sequelize.STRING,
       allowNull: false,
@@ -8,15 +8,11 @@ module.exports = (sequelize, Sequelize) => {
       type: Sequelize.STRING,
       allowNull: false,
     },
-    patient: {
-      type: Sequelize.INTEGER,
-      allowNull: false,
-    },
-    // reading: {
+    // result: {
     //   type: Sequelize.INTEGER,
-    //   allowNull: true,
+    //   allowNull: false,
     // },
   })
 
-  return Result
+  return Reading
 }
