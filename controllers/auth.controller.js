@@ -91,58 +91,6 @@ exports.signin = (req, res) => {
     })
 }
 
-exports.createSeed = (req, res) => {
-  const seed = [
-    {
-      username: '1001',
-      password: bcrypt.hashSync('password', 8),
-      email: 'patient1@mail.co',
-      roles: ['patient'],
-    },
-    {
-      username: '2002',
-      password: bcrypt.hashSync('password', 8),
-      email: 'medic1@mail.co',
-      roles: ['medic'],
-    },
-    {
-      username: '3003',
-      password: bcrypt.hashSync('password', 8),
-      email: 'admin1@mail.co',
-      roles: ['admin'],
-    },
-  ]
-
-  User.bulkCreate(seed)
-    .then((data) => {
-      const users = seed.map(async (user) => {
-        const userCurrent = await User.findOne({
-          where: {
-            username: user.username,
-          },
-        })
-        const rolesFound = await Role.findAll({
-          where: {
-            name: {
-              [Op.or]: user.roles,
-            },
-          },
-        })
-        return userCurrent.setRoles(rolesFound)
-      })
-      Promise.all(users)
-        .then((result) => {
-          res.send(result)
-        })
-        .catch((error) => console.error(error))
-    })
-    .catch((err) => {
-      res.status(500).send({
-        message: err.message || 'Some error occurred while creating the seed.',
-      })
-    })
-}
-
 exports.createSeedFull = async (req, res) => {
   try {
     const seedRoles = [
@@ -179,6 +127,8 @@ exports.createSeedFull = async (req, res) => {
         email: 'medic1@mail.co',
         firstName: 'Medic',
         lastName: 'Uno',
+        address: 'Calle 21 # 21 - 21 Poblado - Ed. El Doral apto 201',
+        phone: '321 211 2121',
         roles: ['medic'],
         patients: [
           {
@@ -187,6 +137,8 @@ exports.createSeedFull = async (req, res) => {
             email: 'patient1@mail.co',
             firstName: 'Patricia',
             lastName: 'Cortes Corredor',
+            address: 'Calle 11 # 11 - 11 Poblado - Ed. El Doral apto 101',
+            phone: '311 111 1111',
             results: [
               {
                 name: '31-01-2022-MA-PATRICIA_CORTES-JC-MMT_1',
@@ -228,6 +180,8 @@ exports.createSeedFull = async (req, res) => {
             email: 'patient2@mail.co',
             firstName: 'Rodrigo',
             lastName: 'Sanin Garcia',
+            address: 'Calle 12 # 12 - 12 Poblado - Ed. El Doral apto 102',
+            phone: '312 122 1212',
             results: [
               {
                 name: '28-01-2022-MA-RODRIGO_SANIN-MZ-MMT',
@@ -265,6 +219,8 @@ exports.createSeedFull = async (req, res) => {
             email: 'patient3@mail.co',
             firstName: 'Patient',
             lastName: 'Tres',
+            address: 'Calle 13 # 13 - 13 Poblado - Ed. El Doral apto 103',
+            phone: '313 133 1313',
             results: [
               {
                 name: 'CORTES_CORREDOR_PATRICIA-MACULA_VIDEO_0_OD',
@@ -280,6 +236,8 @@ exports.createSeedFull = async (req, res) => {
         email: 'admin1@mail.co',
         firstName: 'Admin',
         lastName: 'Uno',
+        address: 'Calle 31 # 31 - 31 Poblado - Ed. El Doral apto 301',
+        phone: '331 311 3131',
         roles: ['admin'],
       },
       {
@@ -288,97 +246,65 @@ exports.createSeedFull = async (req, res) => {
         email: 'admin2@mail.co',
         firstName: 'Admin',
         lastName: 'Dos',
+        address: 'Calle 32 # 32 - 32 Poblado - Ed. El Doral apto 302',
+        phone: '332 322 3232',
         roles: ['admin'],
       },
     ]
 
-    let newUsers = []
     const createdUsers = await seedUsers.map(async (seedUser) => {
       const createdUser = await User.create(seedUser)
       await createdUser.setRoles(newRoles[seedUser.roles[0]])
       newUsers.push(createdUser)
-      // console.info('\n\n\n\nnewUsers')
-      // console.info(newUsers)
       if (seedUser.patients) {
         const createdPatients = await seedUser.patients.map(
           async (seedUserPatient) => {
-            // seedUserPatient.medic = createdUser.id
-            const seedUserPatientUpdated = {...seedUserPatient, medic: createdUser.id}
-            // console.info('\n\n\n\nseedUserPatientUpdated')
-            // console.info(seedUserPatientUpdated)
+            const seedUserPatientUpdated = {
+              ...seedUserPatient,
+              medic: createdUser.id,
+            }
             const createdPatient = await User.create(seedUserPatientUpdated)
             await createdPatient.setRoles(newRoles.patient)
             if (seedUserPatient.results) {
               const createdResults = await seedUserPatient.results.map(
                 async (seedUserPatientResult) => {
-                  // seedUserPatientResult.user = createdPatient.id
-                  const seedUserPatientResultUpdated = {
-                    ...seedUserPatientResult,
-                    userId: createdPatient.id,
-                  }
-                  // console.info('\n\n\n\nseedUserPatientResultUpdated')
-                  // console.info(seedUserPatientResultUpdated)
                   const createdResult = await Result.create(
-                    // seedUserPatientResultUpdated
                     seedUserPatientResult
-                  ).then(async result => {
-                    // console.info('\n\n\n\nresult 1')
-                    // console.info(result)
-                    if (seedUserPatientResult.reading) {
-                      let tempReading = seedUserPatientResult.reading
-                      // tempReading.result = createdResult.id
-                      tempReading.resultId = result.id
-                      const createdReading = await Reading.create(tempReading).then(async reading => {
-                        const result = await Result.findOne({where: {id: reading.resultId}, include: [{model: Reading, as: 'reading'}]})
-                        console.info('\n\n\n\nresult')
-                        console.info(result)
-                        return reading
-                      }).catch(error => {
-                        console.error(error)
-                        res.status(500).send(error)
-                      })
-                      // result.setReading(createdReading)
-                      console.info('\n\n\n\ncreatedReading')
-                      console.info(createdReading)
-                      // return createdReading
-                    }
-                    return result
-                  }).catch(error => {console.error(error)
-                    res.status(500).send(error)
-                  })
-                  
+                  )
+                    .then(async (result) => {
+                      if (seedUserPatientResult.reading) {
+                        let tempReading = seedUserPatientResult.reading
+                        tempReading.resultId = result.id
+                        const createdReading = await Reading.create(tempReading)
+                          .then(async (reading) => {
+                            const result = await Result.findOne({
+                              where: { id: reading.resultId },
+                              include: [{ model: Reading, as: 'reading' }],
+                            })
+                            return reading
+                          })
+                          .catch((error) => {
+                            console.error(error)
+                            res.status(500).send(error)
+                          })
+                      }
+                      return result
+                    })
+                    .catch((error) => {
+                      console.error(error)
+                      res.status(500).send(error)
+                    })
+
                   return createdResult
                 }
               )
               const newResults = await Promise.all(createdResults)
                 .then(async (createdResults) => {
-                  // if (createdPatient.username === '1005') console.info('\n\nHELLOHELLOHELLOHELLOHELLOHELLOHELLOHELLO')
-                  // await createdPatient
-                  //   .setResults(createdResults)
-                  //   .then(async (res) => {
-                  //     const recentPatient = await User.findOne({
-                  //       where: { id: createdPatient.id },
-                  //       include: [{ model: Result, as: 'results' }],
-                  //     })
-                  //     // console.info('\n\n\n\nINSIDE SET RESULTS')
-                  //     // console.info(recentPatient)
-                  //     return res
-                  //   })
-                  //   .catch((error) => {
-                  //     console.error(error)
-                  //     res.status(500).send(error)
-                  //   })
-                  createdResults.map(createdResult => console.info('\n\n\n\ncreatedResult', createdResult))
-                  const setResults = await createdPatient.setResults(createdResults)
-                  // newUsers.push(createdPatient)
-                  console.info('\n\n\n\nsetResults')
-                  console.info(setResults)
-                  // console.info('\n\n\n\nnewUsers')
-                  // console.info(newUsers)
-                  // const newPatient = await User.findByPk(createdPatient.id)
+                  const setResults = await createdPatient.setResults(
+                    createdResults
+                  )
                   const newPatient = await User.findOne({
                     where: { id: createdPatient.id },
-                    // include: Result,
                     include: [
                       {
                         model: Result,
@@ -386,12 +312,6 @@ exports.createSeedFull = async (req, res) => {
                       },
                     ],
                   })
-                  newUsers.push(newPatient)
-                  console.log('\n\n\n\n\n\n\n\nnewPatient')
-                  console.log(newPatient)
-                  // console.log('\n\n\n\n\n\n\n\n')
-                  // return createdPatient
-                  // return newPatient
                   return createdResults
                 })
                 .catch((error) => {
@@ -402,59 +322,34 @@ exports.createSeedFull = async (req, res) => {
             return createdPatient
           }
         )
-        await Promise.all(createdPatients).then(createdPatients => {
-          console.info('\n\n\n\ncreatedPatients')
-          console.info(createdPatients)
-          return createdPatients
-        }).catch(error => {
-          console.error(error)
-          res.status(500).send(error)
-        })
+        await Promise.all(createdPatients)
+          .then((createdPatients) => {
+            return createdPatients
+          })
+          .catch((error) => {
+            console.error(error)
+            res.status(500).send(error)
+          })
       }
       return createdUser
     })
 
-    // console.info('\n\n\n\nnewUsers')
-    // console.info(newUsers)
-    // await Promise.all(newUsers)
-    //   .then((newUsers) => {
-    //     console.info('\n\n\n\nINSIDE PROMISE ALL')
-    //     console.info(newUsers)
-    //     res.status(200).send(newUsers)
-    //   })
-    //   .catch((error) => console.error(error))
-
     await Promise.all(createdUsers)
       .then(async (createdUsers) => {
-        // const users = await User.findAll()
-        // const users = await User.findAll({ include: Result })
-        const users = await User.findAll({ include: [{
-          model: Result, as: 'results'
-        }] })
-        console.info('\n\n\n\nusers')
-        console.info(users)
-        // const users = await User.findAll({
-        //   include: [
-        //     {
-        //       model: Result,
-        //       as: 'results',
-        //     },
-        //   ],
-        // })
-        // console.info(users.length)
-        // const patient = await User.findOne({
-        //   where: {username: '1001'},
-        //   include: [
-        //     // { model: Role, as: 'roles', where: { name: 'patient' } },
-        //     { model: Result, as: 'results' },
-        //   ],
-        // })
+        const users = await User.findAll({
+          include: [
+            {
+              model: Result,
+              as: 'results',
+            },
+          ],
+        })
         res.status(200).send(users)
-        // return res.status(200).send(patient)
       })
       .catch((error) => {
         console.error(error)
-        res.status(500).send(error)})
+        res.status(500).send(error)
+      })
   } catch (error) {
     console.error(error)
     return res.status(500).send(error)
