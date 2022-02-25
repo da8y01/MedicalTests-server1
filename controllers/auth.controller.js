@@ -19,6 +19,8 @@ exports.signup = (req, res) => {
     username: req.body.username,
     email: req.body.email,
     password: bcrypt.hashSync(req.body.password, 8),
+    firstName: req.body.firstName,
+    lastName: req.body.lastName,
   })
     .then((user) => {
       if (req.body.roles) {
@@ -255,7 +257,6 @@ exports.createSeedFull = async (req, res) => {
     const createdUsers = await seedUsers.map(async (seedUser) => {
       const createdUser = await User.create(seedUser)
       await createdUser.setRoles(newRoles[seedUser.roles[0]])
-      newUsers.push(createdUser)
       if (seedUser.patients) {
         const createdPatients = await seedUser.patients.map(
           async (seedUserPatient) => {
@@ -363,17 +364,20 @@ exports.forgotPassword = async (req, res) => {
     let testAccount = await nodemailer.createTestAccount()
 
     const transportOptions = {
-      host: 'smtp.ethereal.email',
+      // host: 'smtp.ethereal.email',
+      host: 'mail.sdiagnosticovisual.com',
       // host: 'smtp.gmail.com',
       // host: 'outlook.office365.com', // IMAP
       // host: 'smtp-mail.outlook.com', // SMTP
-      // port: 465,
-      port: 587, // SMTP
+      port: 465,
+      // port: 587, // SMTP
       // port: 993, // IMAP
       secure: false, // true for 465, false for other ports
       auth: {
-        user: testAccount.user, // generated ethereal user
-        pass: testAccount.pass, // generated ethereal password
+        // user: testAccount.user, // generated ethereal user
+        // pass: testAccount.pass, // generated ethereal password
+        user: 'webmaster@sdiagnosticovisual.com', // generated ethereal user
+        pass: 'ffdgF8941*/', // generated ethereal password
       },
       tls: {
         // do not fail on invalid certs
@@ -396,7 +400,7 @@ exports.forgotPassword = async (req, res) => {
       where: { username: req.params.username },
     })
     const messageOptions = {
-      from: '"mailer@server.com" <mailer@server.com>', // sender address
+      from: '"webmaster@sdiagnosticovisual.com" <webmaster@sdiagnosticovisual.com>', // sender address
       to: user.email,
       subject: 'Recordatorio de clave.', // Subject line
       text: 'La clave de ingreso es: password', // plain text body

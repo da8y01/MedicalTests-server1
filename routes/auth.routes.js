@@ -20,7 +20,6 @@ module.exports = function (app) {
   );
 
   app.post("/api/auth/signin", controller.signin);
-  app.get("/api/auth/seed", controller.createSeed);
   app.get("/api/auth/seedFull", controller.createSeedFull);
   app.get("/api/auth/forgotPassword/:username", controller.forgotPassword);
 };
