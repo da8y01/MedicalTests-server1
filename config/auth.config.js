@@ -1,4 +1,4 @@
 module.exports = {
-  // secret: "secret-key",
-  secret: process.env.jwtSecret,
+  secret: "secret-key",
+  // secret: process.env.jwtSecret,
 }
