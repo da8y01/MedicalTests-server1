@@ -242,8 +242,9 @@ exports.delete = (req, res) => {
 
 // Delete all Patients from the database.
 exports.deleteAll = (req, res) => {
-  Patient.destroy({
-    where: {},
+  User.destroy({
+    // where: {},
+    where: {id: req.body.patients},
     truncate: false,
   })
     .then((nums) => {

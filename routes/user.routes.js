@@ -16,6 +16,7 @@ module.exports = function (app) {
   app.get("/api/test/patient", [authJwt.verifyToken], controller.patientBoard);
   
   app.get("/api/patients", [authJwt.verifyToken], patientController.findAll);
+  app.post("/api/patients/delete", [authJwt.verifyToken, authJwt.isAdmin], patientController.deleteAll);
 
   app.get(
     "/api/test/medic",

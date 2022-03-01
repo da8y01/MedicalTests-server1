@@ -99,13 +99,9 @@ exports.findAll = (req, res) => {
         },
       ],
     }
-    console.info('\n\n\n\nparams')
-    console.info(params)
 
     Result.findAndCountAll(params)
       .then((data) => {
-        console.info('\n\n\n\ndata')
-        console.info(data)
         res.status(200).send(data)
       })
       .catch((error) => {
