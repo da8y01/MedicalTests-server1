@@ -33,11 +33,11 @@ app.use(express.static(path.join(__dirname, 'public')))
 const db = require('./models')
 const Role = db.role
 const User = db.user
-// db.sequelize.sync()
-db.sequelize.sync({ force: true }).then(() => {
-  // db.sequelize.sync().then(() => {
-  console.log('Drop and re-sync db.')
-  // console.log('Sync db without force.')
+
+// db.sequelize.sync({ force: true }).then(() => {
+db.sequelize.sync().then(() => {
+  // console.log('Drop and re-sync db.')
+  console.log('Sync db without force.')
   // initial();
 })
 
