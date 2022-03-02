@@ -173,19 +173,19 @@ exports.findAll = (req, res) => {
 exports.findOne = (req, res) => {
   const id = req.params.id
 
-  Patient.findByPk(id)
+  User.findByPk(id)
     .then((data) => {
       if (data) {
         res.status(200).send(data)
       } else {
         res.status(404).send({
-          message: `Cannot find Patient with id=${id}.`,
+          message: `Cannot find User with id=${id}.`,
         })
       }
     })
     .catch((err) => {
       res.status(500).send({
-        message: 'Error retrieving Patient with id=' + id,
+        message: 'Error retrieving User with id=' + id,
       })
     })
 }
