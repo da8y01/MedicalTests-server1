@@ -194,23 +194,23 @@ exports.findOne = (req, res) => {
 exports.update = (req, res) => {
   const id = req.params.id
 
-  Patient.update(req.body, {
-    where: { id: id },
+  User.update(req.body, {
+    where: { id: req.body.id },
   })
     .then((num) => {
       if (num == 1) {
         res.status(200).send({
-          message: 'Patient was updated successfully.',
+          message: 'User was updated successfully.',
         })
       } else {
         res.send({
-          message: `Cannot update Patient with id=${id}. Maybe Patient was not found or req.body is empty.`,
+          message: `Cannot update User with id=${id}. Maybe User was not found or req.body is empty.`,
         })
       }
     })
     .catch((err) => {
       res.status(500).send({
-        message: 'Error updating Patient with id=' + id,
+        message: 'Error updating User with id=' + id,
       })
     })
 }
