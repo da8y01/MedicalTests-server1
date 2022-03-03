@@ -5,12 +5,12 @@ module.exports = (app) => {
 
   // Create a new Result
   router.post("/", results.create);
+  
+  router.post("/upload", results.upload);
 
   // Retrieve all Results
   router.get("/", results.findAll);
   
-  router.get("/seed", results.createSeed);
-
   // Retrieve all published Results
   router.get("/published", results.findAllPublished);
 

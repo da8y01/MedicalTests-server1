@@ -45,37 +45,13 @@ exports.create = (req, res) => {
     })
 }
 
-exports.createSeed = (req, res) => {
-  const seed = [
-    {
-      name: 'result 1',
-      link: 'https://medical-tests.herokuapp.com/DummyPDFDocument.pdf',
-      patient: 1,
-      reading: 1,
-    },
-    {
-      name: 'result 2',
-      link: 'https://medical-tests.herokuapp.com/Landscape1.jpg',
-      patient: 2,
-      reading: null,
-    },
-    {
-      name: 'result 3',
-      link: 'https://medical-tests.herokuapp.com/Video1.mp4',
-      patient: 3,
-      reading: 3,
-    },
-  ]
-
-  Result.bulkCreate(seed)
-    .then((data) => {
-      res.send(data)
-    })
-    .catch((err) => {
-      res.status(500).send({
-        message: err.message || 'Some error occurred while creating the seed.',
-      })
-    })
+exports.upload = (req, res) => {
+  try {
+    let file = req['files'].fileResult
+    console.log('File uploaded: ', file.name)
+  } catch (error) {
+    console.error(error)
+  }
 }
 
 // Retrieve all Results from the database.
