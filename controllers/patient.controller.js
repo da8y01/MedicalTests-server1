@@ -172,6 +172,7 @@ exports.findAll = (req, res) => {
 // Find a single Patient with an id
 exports.findOne = (req, res) => {
   const id = req.params.id
+  console.info('\n\n\n\n', id)
 
   User.findByPk(id)
     .then((data) => {
@@ -192,6 +193,7 @@ exports.findOne = (req, res) => {
 
 // Update a Patient by the id in the request
 exports.update = (req, res) => {
+  console.info('\n\n\n\n', req.body)
   const id = req.params.id
 
   User.update(req.body, {
