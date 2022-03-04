@@ -47,10 +47,16 @@ exports.create = (req, res) => {
 
 exports.upload = (req, res) => {
   try {
-    let file = req['files'].fileResult
-    console.log('File uploaded: ', file.name)
+    const file = req['file']
+    console.info('file: ', file)
+    // res.statusCode = 200;
+    // res.setHeader('Content-Type', 'application/json');
+    // res.json(req.file);
+    // res.status(200).send()
+    res.status(200).json(file)
   } catch (error) {
     console.error(error)
+    res.status(500).send(error.message)
   }
 }
 

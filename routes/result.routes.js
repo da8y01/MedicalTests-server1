@@ -1,3 +1,24 @@
+const multer  = require('multer')
+
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+      cb(null, 'public/');
+  },
+
+  filename: (req, file, cb) => {
+      cb(null, file.originalname)
+  }
+});
+const imageFileFilter = (req, file, cb) => {
+  if(!file.originalname.match(/\.(jpg|jpeg|png|avi|mp4|pdf)$/)) {
+      return cb(new Error('You can upload only documents files!'), false);
+  }
+  cb(null, true);
+};
+
+// const upload = multer({ dest: 'public/' })
+const upload = multer({ storage: storage, fileFilter: imageFileFilter});
+
 module.exports = (app) => {
   const results = require("../controllers/result.controller.js");
 
@@ -6,7 +27,7 @@ module.exports = (app) => {
   // Create a new Result
   router.post("/", results.create);
   
-  router.post("/upload", results.upload);
+  router.post("/upload", upload.single('result'), results.upload);
 
   // Retrieve all Results
   router.get("/", results.findAll);
