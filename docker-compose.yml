@@ -1,0 +1,58 @@
+version: '3'
+
+services:
+  # mongodb:
+  #   # image: mongo:5.0.2
+  #   image: mongo
+  #   restart: unless-stopped
+  #   environment:
+  #     MONGO_INITDB_ROOT_USERNAME: root
+  #     MONGO_INITDB_ROOT_PASSWORD: 123456
+  #   ports:
+  #     - "27017"
+  #   volumes:
+  #     - db:/data/db
+
+  db:
+    image: postgres
+    # restart: always
+    environment:
+      POSTGRES_PASSWORD: postgres
+
+  # app:
+  #   depends_on:
+  #     # - monogdb
+  #     - db
+  #   build: .
+  #   restart: unless-stopped
+  #   ports:
+  #     - "8080:8080"
+  #   environment:
+  #     - MONGO_DB_URI=mongodb://mongodb/audios
+  #   stdin_open: true
+  #   tty: true
+
+  server:
+    depends_on:
+      # - monogdb
+      - db
+    # build: ../MedicalTests-server1/
+    build: .
+    # restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      - DB_HOST=db
+    # stdin_open: true
+    # tty: true
+
+  webapp:
+    depends_on:
+      - server
+    ports:
+      - "8081:8081"
+    build: ../MedicalTests-webapp1/
+
+# volumes:
+#   db:
+#     external: true
