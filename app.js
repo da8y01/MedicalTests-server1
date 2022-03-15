@@ -34,12 +34,12 @@ const db = require('./models')
 const Role = db.role
 const User = db.user
 
-db.sequelize.sync({ force: true }).then(() => {
-// db.sequelize.sync().then(() => {
-  console.log('Drop and re-sync db.')
-  // console.log('Sync db without force.')
-  // initial();
-})
+if (process.env.NODE_ENV === 'production')
+  db.sequelize.sync().then(() => console.log('Sync db without force.'))
+else
+  db.sequelize
+    .sync({ force: true })
+    .then(() => console.log('Drop and re-sync db.'))
 
 app.use('/', indexRouter)
 app.use('/users', usersRouter)
