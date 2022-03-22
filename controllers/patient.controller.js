@@ -47,75 +47,20 @@ exports.create = (req, res) => {
     })
 }
 
-exports.createSeed = (req, res) => {
-  const seed = [
-    {
-      document: '1111',
-      firstName: 'Andres',
-      lastName: 'Agudelo',
-      address: 'Calle 11 # 11 - 11 Poblado - Ed. El Doral apto 101',
-      phone: '3111111111',
-      email: 'andres@agudelo.co',
-    },
-    {
-      document: '2222',
-      firstName: 'Bernardo',
-      lastName: 'Botero',
-      address: 'Calle 22 # 22 - 22 Poblado - Ed. El Doral apto 202',
-      phone: '3222222222',
-      email: 'bernardo@botero.co',
-    },
-    {
-      document: '3333',
-      firstName: 'Carlos',
-      lastName: 'Caicedo',
-      address: 'Calle 33 # 33 - 33 Poblado - Ed. El Doral apto 303',
-      phone: '3333333333',
-      email: 'carlos@caicedo.co',
-    },
-    {
-      document: '4444',
-      firstName: 'Dario',
-      lastName: 'Delgado',
-      address: 'Calle 44 # 44 - 44 Poblado - Ed. El Doral apto 404',
-      phone: '3444444444',
-      email: 'dario@delgado.co',
-    },
-    {
-      document: '5555',
-      firstName: 'Ernesto',
-      lastName: 'Echeverry',
-      address: 'Calle 55 # 55 - 55 Poblado - Ed. El Doral apto 505',
-      phone: '3555555555',
-      email: 'ernesto@echeverry.co',
-    },
-    {
-      document: '6666',
-      firstName: 'Fanny',
-      lastName: 'Fuentes',
-      address: 'Calle 66 # 66 - 66 Poblado - Ed. El Doral apto 606',
-      phone: '3666666666',
-      email: 'fanny@fuentes.co',
-    },
-    {
-      document: '7777',
-      firstName: 'Gustavo',
-      lastName: 'Gomez',
-      address: 'Calle 77 # 77 - 77 Poblado - Ed. El Doral apto 707',
-      phone: '3777777777',
-      email: 'gustavo@gomez.co',
-    },
-  ]
-
-  Patient.bulkCreate(seed)
-    .then((data) => {
-      res.send(data)
+exports.assignMedic = async (req, res) => {
+  try {
+    const medic = await User.findOne({ where: { username: req.body.medic } })
+    const patients = await User.findAll({ where: { username: { [Op.in]: req.body.patients } } })
+    const updatedPatients = await patients.map(async patient => {
+      patient.medic = medic.id
+      const saved = await patient.save()
+      return saved
     })
-    .catch((err) => {
-      res.status(500).send({
-        message: err.message || 'Some error occurred while creating the seed.',
-      })
-    })
+    res.status(200).send(updatedPatients)
+  } catch (error) {
+    console.error(error)
+    res.status(500).send(error)
+  }
 }
 
 // Retrieve all Patients from the database.
