@@ -172,9 +172,9 @@ exports.findAll = (req, res) => {
 // Find a single Patient with an id
 exports.findOne = (req, res) => {
   const id = req.params.id
-  console.info('\n\n\n\n', id)
 
-  User.findByPk(id)
+  // User.findByPk(id)
+  User.findOne({ where: { username: id } })
     .then((data) => {
       if (data) {
         res.status(200).send(data)
@@ -185,9 +185,10 @@ exports.findOne = (req, res) => {
       }
     })
     .catch((err) => {
-      res.status(500).send({
-        message: 'Error retrieving User with id=' + id,
-      })
+      res.status(500).send(
+        // { message: 'Error retrieving User with id=' + id, }
+        err
+      )
     })
 }
 
@@ -222,7 +223,8 @@ exports.delete = (req, res) => {
   const id = req.params.id
 
   Patient.destroy({
-    where: { id: id },
+    // where: { id: id },
+    where: { username: id },
   })
     .then((num) => {
       if (num == 1) {
@@ -246,7 +248,8 @@ exports.delete = (req, res) => {
 exports.deleteAll = (req, res) => {
   User.destroy({
     // where: {},
-    where: {id: req.body.patients},
+    // where: { id: req.body.patients },
+    where: { username: req.body.patients },
     truncate: false,
   })
     .then((nums) => {

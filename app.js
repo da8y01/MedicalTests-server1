@@ -35,11 +35,11 @@ const Role = db.role
 const User = db.user
 
 if (process.env.NODE_ENV === 'production')
-  db.sequelize.sync().then(() => console.log('Sync db without force.'))
+  db.sequelize.sync().then(() => console.log('Sync db without force.')).catch(error => console.error(error))
 else
   db.sequelize
     .sync({ force: true })
-    .then(() => console.log('Drop and re-sync db.'))
+    .then(() => console.log('Drop and re-sync db.')).catch(error => console.error(error))
 
 app.use('/', indexRouter)
 app.use('/users', usersRouter)
