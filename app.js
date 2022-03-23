@@ -39,7 +39,7 @@ if (process.env.NODE_ENV === 'production')
 else
   db.sequelize
     .sync({ force: true })
-    .then(() => console.log('Drop and re-sync db')).catch(error => console.error(error))
+    .then(() => console.log('Drop and re-sync db.')).catch(error => console.error(error))
 
 app.use('/', indexRouter)
 app.use('/users', usersRouter)
