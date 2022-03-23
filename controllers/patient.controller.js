@@ -150,7 +150,6 @@ exports.findOne = (req, res) => {
 
 // Update a Patient by the id in the request
 exports.update = (req, res) => {
-  console.info('\n\n\n\n', req.body)
   const id = req.params.id
 
   User.update(req.body, {
