@@ -20,6 +20,7 @@ module.exports = function (app) {
   app.put("/api/users", [authJwt.verifyToken], patientController.update);
   app.post("/api/patients/delete", [authJwt.verifyToken, authJwt.isAdmin], patientController.deleteAll);
   app.post("/api/patients/assignMedic", [authJwt.verifyToken, authJwt.isAdmin], patientController.assignMedic);
+  app.get("/api/patients/assignedTo/:medicId", [authJwt.verifyToken, authJwt.isAdmin], patientController.assignedToMedic);
 
   app.get(
     "/api/test/medic",

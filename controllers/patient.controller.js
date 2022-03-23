@@ -63,6 +63,17 @@ exports.assignMedic = async (req, res) => {
   }
 }
 
+exports.assignedToMedic = async (req, res) => {
+  try {
+    const patients = await User.findAll({ where: { medic: req.params.medicId } })
+    res.status(200).send(patients)
+  } catch (error) {
+    console.error(error)
+    // res.status(500).send(error)
+    res.send(error)
+  }
+}
+
 // Retrieve all Patients from the database.
 exports.findAll = (req, res) => {
   try {
