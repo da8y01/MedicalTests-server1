@@ -33,6 +33,7 @@ module.exports = (app) => {
     results.upload
   );
   // router.post("/upload", upload.array('result'), results.upload);
+  router.post("/uploadReading/:resultId", upload.single('reading'), results.uploadReading);
 
   // Retrieve all Results
   router.get("/", results.findAll);

@@ -46,6 +46,27 @@ exports.create = (req, res) => {
     });
 };
 
+exports.uploadReading = async (req, res) => {
+  try {
+    const file = req["file"];
+    console.info(file);
+    // const result = await Result.findByPk(req.params.resultId)
+    // result.setReading()
+    const link = `${req.protocol}://${req.get("host")}/${file.filename}`;
+    console.info(link);
+    const reading = await Reading.create({
+      name: file.filename,
+      link,
+      resultId: req.params.resultId,
+    });
+    console.info(reading);
+    res.status(200).send(reading);
+  } catch (error) {
+    console.info(error);
+    res.status(500).send(error);
+  }
+};
+
 exports.upload = async (req, res) => {
   try {
     const file = req["file"];
@@ -56,12 +77,15 @@ exports.upload = async (req, res) => {
     // res.json(req.file);
     // res.status(200).send()
     const result = await Result.create({ name: file.filename, link });
+    console.info("result", result);
     const user = await User.findOne({
       where: { username: req.params.patientUsername },
     });
     const assigned = await user.setResults(result);
-    console.info(assigned);
-    res.status(200).json(assigned);
+    // console.info("assigned");
+    // console.info(assigned);
+    // res.status(200).json(assigned);
+    res.status(200).send(result);
   } catch (error) {
     console.info(error);
     // res.status(500).send(error.message)
