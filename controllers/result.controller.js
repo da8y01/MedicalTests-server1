@@ -1,5 +1,6 @@
 const db = require("../models");
 const Result = db.results;
+const User = db.user;
 const Reading = db.readings;
 const Op = db.Sequelize.Op;
 
@@ -45,15 +46,22 @@ exports.create = (req, res) => {
     });
 };
 
-exports.upload = (req, res) => {
+exports.upload = async (req, res) => {
   try {
     const file = req["file"];
     console.info("file: ", file);
+    const link = `${req.protocol}://${req.get("host")}/${file.filename}`;
     // res.statusCode = 200;
     // res.setHeader('Content-Type', 'application/json');
     // res.json(req.file);
     // res.status(200).send()
-    res.status(200).json(file);
+    const result = await Result.create({ name: file.filename, link });
+    const user = await User.findOne({
+      where: { username: req.params.patientUsername },
+    });
+    const assigned = await user.setResults(result);
+    console.info(assigned);
+    res.status(200).json(assigned);
   } catch (error) {
     console.info(error);
     // res.status(500).send(error.message)

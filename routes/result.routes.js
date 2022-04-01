@@ -27,7 +27,11 @@ module.exports = (app) => {
   // Create a new Result
   router.post("/", results.create);
 
-  router.post("/upload", upload.single("exam"), results.upload);
+  router.post(
+    "/upload/:patientUsername",
+    upload.single("exam"),
+    results.upload
+  );
   // router.post("/upload", upload.array('result'), results.upload);
 
   // Retrieve all Results
