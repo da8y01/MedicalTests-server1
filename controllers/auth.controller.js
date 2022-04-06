@@ -1,3 +1,5 @@
+require('dotenv').config()
+
 const nodemailer = require("nodemailer");
 const db = require("../models");
 const config = require("../config/auth.config");
@@ -388,19 +390,25 @@ exports.forgotPassword = async (req, res) => {
 
     const transportOptions = {
       // host: 'smtp.ethereal.email',
-      host: "mail.sdiagnosticovisual.com",
+      // host: "mail.sdiagnosticovisual.com",
+      host: "portalsdv.com",
       // host: 'smtp.gmail.com',
       // host: 'outlook.office365.com', // IMAP
       // host: 'smtp-mail.outlook.com', // SMTP
       port: 465,
       // port: 587, // SMTP
       // port: 993, // IMAP
-      secure: false, // true for 465, false for other ports
+      // port: 995, // IMAP
+      // secure: false, // true for 465, false for other ports
+      secure: true, // true for 465, false for other ports
       auth: {
         // user: testAccount.user, // generated ethereal user
         // pass: testAccount.pass, // generated ethereal password
-        user: "webmaster@sdiagnosticovisual.com", // generated ethereal user
-        pass: "ffdgF8941*/", // generated ethereal password
+        // user: "webmaster@sdiagnosticovisual.com", // generated ethereal user
+        // user: "wwwportalsdv@portalsdv.com", // generated ethereal user
+        user: process.env.EMAIL_USER, // generated ethereal user
+        // pass: "ffdgF8941*/", // generated ethereal password
+        pass: process.env.EMAIL_PASS, // generated ethereal password
       },
       tls: {
         // do not fail on invalid certs
@@ -423,10 +431,11 @@ exports.forgotPassword = async (req, res) => {
       where: { username: req.params.username },
     });
     const messageOptions = {
-      from: '"webmaster@sdiagnosticovisual.com" <webmaster@sdiagnosticovisual.com>', // sender address
+      // from: '"webmaster@sdiagnosticovisual.com" <webmaster@sdiagnosticovisual.com>', // sender address
+      from: '"webmaster@portalsdv.com" <webmaster@portalsdv.com>', // sender address
       to: user.email,
       subject: "Recordatorio de clave.", // Subject line
-      text: "La clave de ingreso es: password", // plain text body
+      text: `La clave de ingreso es: ${user.username}`, // plain text body
       html: "<b>La clave de ingreso es: password</b>", // html body
     };
     // send mail with defined transport object
