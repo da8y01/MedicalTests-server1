@@ -150,7 +150,7 @@ exports.createSeedFull = async (req, res) => {
     const seedUsers = [
       {
         username: "2001",
-        password,
+        password: bcrypt.hashSync("2001", 8),
         email: "medic1@mail.co",
         firstName: "Medic",
         lastName: "Uno",
@@ -160,7 +160,7 @@ exports.createSeedFull = async (req, res) => {
         patients: [
           {
             username: "1001",
-            password,
+            password: bcrypt.hashSync("1001", 8),
             email: "patient1@mail.co",
             firstName: "Patricia",
             lastName: "Cortes Corredor",
@@ -203,7 +203,7 @@ exports.createSeedFull = async (req, res) => {
           },
           {
             username: "1002",
-            password,
+            password: bcrypt.hashSync("1002", 8),
             email: "patient2@mail.co",
             firstName: "Rodrigo",
             lastName: "Sanin Garcia",
@@ -242,7 +242,7 @@ exports.createSeedFull = async (req, res) => {
           },
           {
             username: "1003",
-            password,
+            password: bcrypt.hashSync("1003", 8),
             email: "patient3@mail.co",
             firstName: "Patient",
             lastName: "Tres",
@@ -259,7 +259,7 @@ exports.createSeedFull = async (req, res) => {
       },
       {
         username: "3001",
-        password,
+        password: bcrypt.hashSync("3001", 8),
         email: "admin1@mail.co",
         firstName: "Admin",
         lastName: "Uno",
@@ -269,7 +269,7 @@ exports.createSeedFull = async (req, res) => {
       },
       {
         username: "3002",
-        password,
+        password: bcrypt.hashSync("3002", 8),
         email: "admin2@mail.co",
         firstName: "Admin",
         lastName: "Dos",
