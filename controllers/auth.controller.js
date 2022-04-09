@@ -156,6 +156,7 @@ exports.createSeedFull = async (req, res) => {
         lastName: "Uno",
         address: "Calle 21 # 21 - 21 Poblado - Ed. El Doral apto 201",
         phone: "321 211 2121",
+        birthdate: new Date(1970, 1, 20),
         roles: ["medic"],
         patients: [
           {
@@ -166,6 +167,7 @@ exports.createSeedFull = async (req, res) => {
             lastName: "Cortes Corredor",
             address: "Calle 11 # 11 - 11 Poblado - Ed. El Doral apto 101",
             phone: "311 111 1111",
+            birthdate: new Date(1970, 1, 20),
             results: [
               {
                 name: "31-01-2022-MA-PATRICIA_CORTES-JC-MMT_1",
@@ -209,6 +211,7 @@ exports.createSeedFull = async (req, res) => {
             lastName: "Sanin Garcia",
             address: "Calle 12 # 12 - 12 Poblado - Ed. El Doral apto 102",
             phone: "312 122 1212",
+            birthdate: new Date(1970, 1, 20),
             results: [
               {
                 name: "28-01-2022-MA-RODRIGO_SANIN-MZ-MMT",
@@ -248,6 +251,7 @@ exports.createSeedFull = async (req, res) => {
             lastName: "Tres",
             address: "Calle 13 # 13 - 13 Poblado - Ed. El Doral apto 103",
             phone: "313 133 1313",
+            birthdate: new Date(1970, 1, 20),
             results: [
               {
                 name: "CORTES_CORREDOR_PATRICIA-MACULA_VIDEO_0_OD",
@@ -265,6 +269,7 @@ exports.createSeedFull = async (req, res) => {
         lastName: "Uno",
         address: "Calle 31 # 31 - 31 Poblado - Ed. El Doral apto 301",
         phone: "331 311 3131",
+        birthdate: new Date(1970, 1, 20),
         roles: ["admin"],
       },
       {
@@ -275,6 +280,7 @@ exports.createSeedFull = async (req, res) => {
         lastName: "Dos",
         address: "Calle 32 # 32 - 32 Poblado - Ed. El Doral apto 302",
         phone: "332 322 3232",
+        birthdate: new Date(1970, 1, 20),
         roles: ["admin"],
       },
     ];

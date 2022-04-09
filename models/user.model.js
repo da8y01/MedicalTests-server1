@@ -30,6 +30,10 @@ module.exports = (sequelize, Sequelize) => {
       type: Sequelize.STRING,
       allowNull: true,
     },
+    birthdate: {
+      type: Sequelize.DATE,
+      allowNull: true,
+    },
     medic: {
       type: Sequelize.INTEGER,
       allowNull: true
