@@ -1,4 +1,4 @@
-require('dotenv').config()
+require("dotenv").config();
 
 const nodemailer = require("nodemailer");
 const db = require("../models");
@@ -79,7 +79,7 @@ exports.signin = (req, res) => {
       if (!user) {
         return res
           .status(404)
-          .send({ message: "ERROR: Usuario no encontrado." });
+          .send({ message: "[ERROR] Usuario no encontrado." });
       }
 
       var passwordIsValid = bcrypt.compareSync(
@@ -89,7 +89,7 @@ exports.signin = (req, res) => {
 
       if (!passwordIsValid) {
         return res.status(401).send({
-          message: "ERROR: Password inválido.",
+          message: "[ERROR] Password inválido.",
         });
       }
 

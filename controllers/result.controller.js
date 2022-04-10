@@ -187,18 +187,18 @@ exports.delete = (req, res) => {
   })
     .then((num) => {
       if (num == 1) {
-        res.send({
-          message: "Result was deleted successfully!",
+        res.status(200).send({
+          message: "[OK] Result was deleted successfully!",
         });
       } else {
-        res.send({
-          message: `Cannot delete Result with id=${id}. Maybe Result was not found!`,
+        res.status(404).send({
+          message: `[ERROR] Cannot delete Result with id=${id}. Maybe Result was not found!`,
         });
       }
     })
     .catch((err) => {
       res.status(500).send({
-        message: "Could not delete Result with id=" + id,
+        message: `[ERROR] Could not delete Result with id=${id}`,
       });
     });
 };
