@@ -41,7 +41,7 @@ if (process.env.NODE_ENV === "production")
   //   .catch((error) => console.error(error));
 db.sequelize
   .sync({ force: true })
-  .then(() => console.log("Drop and re-sync db."))
+  .then(() => console.log("Drop and re-sync db"))
   .catch((error) => console.error(error));
 else
   db.sequelize
