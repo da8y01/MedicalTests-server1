@@ -14,6 +14,11 @@ module.exports = (sequelize, Sequelize) => {
       allowNull: false,
       unique: true,
     },
+    email2: {
+      type: Sequelize.STRING,
+      allowNull: true,
+      unique: false,
+    },
     firstName: {
       type: Sequelize.STRING,
       allowNull: false,
@@ -33,6 +38,10 @@ module.exports = (sequelize, Sequelize) => {
     birthdate: {
       type: Sequelize.DATE,
       allowNull: true,
+    },
+    documentType: {
+      type: Sequelize.STRING,
+      allowNull: false,
     },
     medic: {
       type: Sequelize.INTEGER,
