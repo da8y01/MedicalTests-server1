@@ -10,19 +10,19 @@ exports.create = (req, res) => {
   // Validate request
   if (!req.body.document) {
     res.status(400).send({
-      message: "[ERROR] Document can not be empty.",
+      message: "Document can not be empty.",
     });
     return;
   }
   if (!req.body.firstName) {
     res.status(400).send({
-      message: "[ERROR] First name can not be empty.",
+      message: "First name can not be empty.",
     });
     return;
   }
   if (!req.body.lastName) {
     res.status(400).send({
-      message: "[ERROR] Last name can not be empty.",
+      message: "Last name can not be empty.",
     });
     return;
   }
@@ -42,7 +42,7 @@ exports.create = (req, res) => {
     .catch((err) => {
       res.status(500).send({
         message:
-          err.message || "[ERROR] Some error occurred while creating the Patient.",
+          err.message || "Some error occurred while creating the Patient.",
       });
     });
 };
@@ -58,7 +58,8 @@ exports.assignMedic = async (req, res) => {
       const saved = await patient.save();
       return saved;
     });
-    res.status(200).send(updatedPatients);
+    const result = await Promise.all(updatedPatients)
+    res.status(200).send(result);
   } catch (error) {
     console.error(error);
     res.status(500).send(error);
@@ -145,7 +146,7 @@ exports.findAll = (req, res) => {
       .catch((err) => {
         res.status(500).send({
           message:
-            err.message || "[ERROR] Some error occurred while retrieving patients.",
+            err.message || "Some error occurred while retrieving patients.",
         });
       });
   } catch (error) {
@@ -165,7 +166,7 @@ exports.findOne = (req, res) => {
         res.status(200).send(data);
       } else {
         res.status(404).send({
-          message: `[ERROR] Cannot find User with id=${id}.`,
+          message: `Cannot find User with id: ${id}.`,
         });
       }
     })
@@ -179,26 +180,28 @@ exports.findOne = (req, res) => {
 
 // Update a Patient by the id in the request
 exports.update = (req, res) => {
-  const id = req.params.id;
+  const reqUser = req.body;
+  const username = reqUser.username
 
-  User.update(req.body, {
-    where: { id: req.body.id },
+  User.update(reqUser, {
+    // where: { id: req.body.id },
+    where: { username: username },
   })
-    .then((num) => {
+    .then(async num => {
       if (num == 1) {
-        res.status(200).send({
-          message: "[OK] User was updated successfully.",
-        });
+        const userReturn = await User.findOne({where: {username: username}})
+        res.status(200).send(userReturn);
       } else {
         res.send({
-          message: `[ERROR] Cannot update User with id=${id}. Maybe User was not found or req.body is empty.`,
+          message: `Cannot update User with id: ${username}. Maybe User was not found or req.body is empty.`,
         });
       }
     })
     .catch((err) => {
-      res.status(500).send({
-        message: `[ERROR] Failure updating User with id=${id}`,
-      });
+      // res.status(500).send({
+      //   message: `Failure updating User with username: ${username}.`,
+      // });
+      res.status(500).send(err);
     });
 };
 
@@ -216,14 +219,14 @@ exports.delete = (req, res) => {
           message: "[OK] Patient was deleted successfully.",
         });
       } else {
-        res.send({
-          message: `[ERROR] Cannot delete Patient with id=${id}. Maybe Patient was not found.`,
+        res.status(404).send({
+          message: `Cannot delete Patient with id: ${id}. Maybe Patient was not found.`,
         });
       }
     })
     .catch((err) => {
       res.status(500).send({
-        message: `[ERROR] Could not delete Patient with id=${id}`,
+        message: `Could not delete Patient with id: ${id}.`,
       });
     });
 };
