@@ -34,6 +34,7 @@ const db = require("./models");
 const Role = db.role;
 const User = db.user;
 
+console.info(`[+] NODE_ENV is ${process.env.NODE_ENV}`)
 if (process.env.NODE_ENV === "production")
   // db.sequelize
   //   .sync()
