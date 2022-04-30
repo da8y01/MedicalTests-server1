@@ -56,6 +56,6 @@ db.results.belongsTo(db.user, {
 
 db.results.hasOne(db.readings)
 
-db.ROLES = ['patient', 'admin', 'medic']
+db.ROLES = ['patient', 'admin', 'medic', 'reader']
 
 module.exports = db

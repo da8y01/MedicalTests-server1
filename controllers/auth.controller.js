@@ -100,7 +100,7 @@ exports.signin = (req, res) => {
       var authorities = [];
       user.getRoles().then((roles) => {
         for (let i = 0; i < roles.length; i++) {
-          authorities.push("ROLE_" + roles[i].name.toUpperCase());
+          authorities.push(roles[i].name.toUpperCase());
         }
         res.status(200).send({
           id: user.id,
@@ -132,6 +132,10 @@ exports.createSeedFull = async (req, res) => {
       {
         id: 3,
         name: "admin",
+      },
+      {
+        id: 4,
+        name: "reader",
       },
     ];
     let newRoles = {
@@ -247,6 +251,21 @@ exports.createSeedFull = async (req, res) => {
               },
             ],
           },
+        ],
+      },
+      {
+        username: "2002",
+        password: bcrypt.hashSync("2002", 8),
+        email: "medic2@mail.co",
+        email2: "medic2@alternate.co",
+        firstName: "Medic",
+        lastName: "Dos",
+        address: "Calle 22 # 22 - 22 Poblado - Ed. El Doral apto 202",
+        phone: "322 222 2222",
+        birthdate: new Date(1970, 1, 20),
+        documentType: "cedula",
+        roles: ["medic"],
+        patients: [
           {
             username: "1003",
             password: bcrypt.hashSync("1003", 8),
@@ -279,16 +298,16 @@ exports.createSeedFull = async (req, res) => {
         roles: ["admin"],
       },
       {
-        username: "3002",
-        password: bcrypt.hashSync("3002", 8),
-        email: "admin2@mail.co",
-        firstName: "Admin",
-        lastName: "Dos",
-        address: "Calle 32 # 32 - 32 Poblado - Ed. El Doral apto 302",
-        phone: "332 322 3232",
+        username: "4001",
+        password: bcrypt.hashSync("4001", 8),
+        email: "reader1@mail.co",
+        firstName: "Reader",
+        lastName: "Uno",
+        address: "Calle 41 # 41 - 41 Poblado - Ed. El Doral apto 401",
+        phone: "341 411 4141",
         birthdate: new Date(1970, 1, 20),
         documentType: "cedula",
-        roles: ["admin"],
+        roles: ["reader"],
       },
     ];
 
