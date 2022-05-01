@@ -58,7 +58,7 @@ exports.assignMedic = async (req, res) => {
       const saved = await patient.save();
       return saved;
     });
-    const result = await Promise.all(updatedPatients)
+    const result = await Promise.all(updatedPatients);
     res.status(200).send(result);
   } catch (error) {
     console.error(error);
@@ -71,20 +71,24 @@ exports.undoAssignMedic = async (req, res) => {
     const patients = await User.findAll({
       where: { username: { [Op.in]: req.body.patients } },
     });
-    Promise.all(patients).then(async patients => {
-      const updatedPatients = await patients.map(async (patient) => {
-        patient.medic = null;
-        const saved = await patient.save();
-        return saved;
+    Promise.all(patients)
+      .then(async (patients) => {
+        const updatedPatients = await patients.map(async (patient) => {
+          patient.medic = null;
+          const saved = await patient.save();
+          return saved;
+        });
+        const resultUpdates = await Promise.all(updatedPatients);
+        const responseUpdates = resultUpdates.map(
+          (resultUpdate) => resultUpdate.username
+        );
+        res.status(200).send(responseUpdates);
+        return responseUpdates;
+      })
+      .catch((error) => {
+        console.error(error);
+        res.status(500).send(error);
       });
-      const resultUpdates = await Promise.all(updatedPatients)
-      const responseUpdates = resultUpdates.map(resultUpdate => resultUpdate.username)
-      res.status(200).send(responseUpdates);
-      return responseUpdates
-    }).catch(error => {
-      console.error(error)
-      res.status(500).send(error)
-    })
   } catch (error) {
     console.error(error);
     res.status(500).send(error);
@@ -114,8 +118,10 @@ exports.findAll = (req, res) => {
         : null;
 
     const queryMedic = req.query.medic;
-    var conditionMedic =
-      queryMedic && queryMedic !== "" ? { medic: queryMedic } : null;
+    let conditionMedic = null;
+    if (queryMedic && queryMedic !== "") conditionMedic = { medic: queryMedic };
+    if (queryMedic && queryMedic === "-1")
+      conditionMedic = { medic: { [Op.not]: null } };
 
     const queryRoles = req.query.roles;
     var conditionRoles =
@@ -181,15 +187,17 @@ exports.findOne = (req, res) => {
 // Update a Patient by the id in the request
 exports.update = (req, res) => {
   const reqUser = req.body;
-  const username = reqUser.username
+  const username = reqUser.username;
 
   User.update(reqUser, {
     // where: { id: req.body.id },
     where: { username: username },
   })
-    .then(async num => {
+    .then(async (num) => {
       if (num == 1) {
-        const userReturn = await User.findOne({where: {username: username}})
+        const userReturn = await User.findOne({
+          where: { username: username },
+        });
         res.status(200).send(userReturn);
       } else {
         res.send({
@@ -247,7 +255,8 @@ exports.deleteAll = (req, res) => {
     .catch((err) => {
       res.status(500).send({
         message:
-          err.message || "[ERROR] Some error occurred while removing all patients.",
+          err.message ||
+          "[ERROR] Some error occurred while removing all patients.",
       });
     });
 };
@@ -261,7 +270,8 @@ exports.findAllAs = (req, res) => {
     .catch((err) => {
       res.status(500).send({
         message:
-          err.message || "[ERROR] Some error occurred while retrieving patients.",
+          err.message ||
+          "[ERROR] Some error occurred while retrieving patients.",
       });
     });
 };
