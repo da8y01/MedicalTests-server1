@@ -71,11 +71,10 @@ exports.uploadReading = async (req, res) => {
 exports.upload = async (req, res) => {
   try {
     const file = req["file"];
-    console.info("file: ", file);
-    //const link = `${req.protocol}://${req.get("host")}/${file.filename}`;
-    const link = `${req.protocol}://${req.get("host")}/downloads/${
-      file.filename
-    }`;
+    const link = `${req.protocol}://${req.get("host")}/${file.filename}`;
+    //const link = `${req.protocol}://${req.get("host")}/downloads/${
+    //  file.filename
+    //}`;
     // res.statusCode = 200;
     // res.setHeader('Content-Type', 'application/json');
     // res.json(req.file);
