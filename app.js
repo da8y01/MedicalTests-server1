@@ -36,14 +36,14 @@ const User = db.user;
 
 console.info(`[+] NODE_ENV is ${process.env.NODE_ENV}`)
 if (process.env.NODE_ENV === "production")
+  //db.sequelize
+  //  .sync()
+  //  .then(() => console.log("Sync db without force."))
+  //  .catch((error) => console.error(error));
   db.sequelize
-    .sync()
-    .then(() => console.log("Sync db without force."))
+    .sync({ force: true })
+    .then(() => console.log("Drop and re-sync db"))
     .catch((error) => console.error(error));
-//db.sequelize
-//  .sync({ force: true })
-//  .then(() => console.log("Drop and re-sync db"))
-//  .catch((error) => console.error(error));
 else
   db.sequelize
     .sync({ force: true })
