@@ -1,3 +1,4 @@
+const { exec } = require("child_process");
 const db = require("../models");
 const Result = db.results;
 const User = db.user;
@@ -71,24 +72,40 @@ exports.upload = async (req, res) => {
   try {
     const file = req["file"];
     console.info("file: ", file);
-    const link = `${req.protocol}://${req.get("host")}/${file.filename}`;
+    //const link = `${req.protocol}://${req.get("host")}/${file.filename}`;
+    const link = `${req.protocol}://${req.get("host")}/downloads/${
+      file.filename
+    }`;
     // res.statusCode = 200;
     // res.setHeader('Content-Type', 'application/json');
     // res.json(req.file);
     // res.status(200).send()
+    const shellCommand =
+      process.env.NODE_ENV === "production"
+        ? `cp ./public/${file.filename} ../public_html/downloads/${file.filename}`
+        : `copy .\\public\\${file.filename} .\\downloads\\${file.filename}`;
+    exec(shellCommand, (error, data, getter) => {
+      if (error) {
+        //console.info("error", error.message);
+        console.info("error of copy");
+        //return;
+      }
+      if (getter) {
+        //console.info("data", data);
+        console.info("data of getter");
+        //return;
+      }
+      //console.info("data", data);
+      console.info("data of copy");
+    });
     const result = await Result.create({ name: file.filename, link });
-    console.info("result", result);
     const user = await User.findOne({
       where: { username: req.params.patientUsername },
     });
     const assigned = await user.setResults(result);
-    // console.info("assigned");
-    // console.info(assigned);
-    // res.status(200).json(assigned);
     res.status(200).send(result);
   } catch (error) {
     console.info(error);
-    // res.status(500).send(error.message)
     res.status(500).send(error);
   }
 };
