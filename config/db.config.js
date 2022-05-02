@@ -19,11 +19,11 @@ const configOptions = {
     use_env_variable: "DATABASE_URL",
     dialect: "postgres",
     dialectOptions: {
-      // ssl: {
-      //   require: true,
-      //   rejectUnauthorized: false
-      // }
-      ssl: false,
+      ssl: {
+        require: true,
+        rejectUnauthorized: false
+      }
+      //ssl: false,
     },
     pool: {
       max: 5,
