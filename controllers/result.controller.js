@@ -194,7 +194,7 @@ exports.update = (req, res) => {
     });
 };
 
-// Delete a Result with the specified id in the request
+// Delete a Result with the id specified in the request
 exports.delete = (req, res) => {
   const id = req.params.id;
 
@@ -215,6 +215,31 @@ exports.delete = (req, res) => {
     .catch((err) => {
       res.status(500).send({
         message: `[ERROR] Could not delete Result with id=${id}`,
+      });
+    });
+};
+
+// Delete the Reading of the Result with the id specified in the request
+exports.deleteReading = (req, res) => {
+  const resultId = req.params.resultId;
+
+  Reading.destroy({
+    where: { resultId },
+  })
+    .then((num) => {
+      if (num == 1) {
+        res.status(200).send({
+          count: num,
+        });
+      } else {
+        res.status(404).send({
+          message: `[ERROR] Cannot delete Reading of Result with id=${id}. Maybe Reading was not found.`,
+        });
+      }
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message: `[ERROR] Could not delete Reading of Result with id=${id}.`,
       });
     });
 };

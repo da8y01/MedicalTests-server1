@@ -1,3 +1,5 @@
+const { authJwt } = require("../middleware");
+
 const multer = require("multer");
 
 const storage = multer.diskStorage({
@@ -53,6 +55,13 @@ module.exports = (app) => {
 
   // Delete a Result with id
   router.delete("/:id", results.delete);
+
+  // Delete the Reading of a Result with the id of the Result
+  router.delete(
+    "/reading/:resultId",
+    [authJwt.verifyToken, authJwt.isAdmin],
+    results.deleteReading
+  );
 
   // Create a new Result
   router.delete("/", results.deleteAll);
